@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-interface AboutScreenProps {}
+interface AboutProps {}
 
-const AboutScreen: React.FC<AboutScreenProps> = ({}) => {
+const About: React.FC<AboutProps> = () => {
   return (
     <View>
       <Text>关于</Text>
@@ -11,4 +11,4 @@ const AboutScreen: React.FC<AboutScreenProps> = ({}) => {
   );
 };
 
-export default AboutScreen;
+export default About;
