@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface MyIconProps {
   size: number;
-  light: boolean;
+  light?: boolean;
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
 }
 

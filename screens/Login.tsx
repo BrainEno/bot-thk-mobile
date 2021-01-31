@@ -1,53 +1,103 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { SubmitButton } from "../components/SubmitButton";
+import { Link, useHistory } from "react-router-native";
+import { useMutation, gql, useLazyQuery } from "@apollo/client";
+import { TouchableOpacity } from "react-native";
+import { MyIcon } from "../components/MyIcon";
 
 interface LoginProps {}
 const Login: React.FC<LoginProps> = ({}) => {
-  const [values, onChangeValues] = useState({
+  // const LOGIN = gql`
+  //   mutation Login($email: String!, $password: String!) {
+  //     login(email: $email, password: $password) {
+  //       accessToken
+  //     }
+  //   }
+  // `;
+  const LOGIN = gql`
+    query Login($email: String!, $password: String!) {
+      login(email: $email, password: $password) {
+        token
+        email
+        username
+        createdAt
+      }
+    }
+  `;
+
+  const history = useHistory();
+  const [variables, onChangeVariable] = useState({
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
 
-  const { email, password } = values;
+  const { email, password } = variables;
 
-  const submitLogin = async () => {
-    console.log("object");
-    const data = await fetch(
-      "https://myseo-blog-backend.herokuapp.com/api/signup",
-      { method: "POST" }
-    );
+  // const [login, { data }] = useMutation(LOGIN, {
+  //   update: (_, __) => history.push("/"),
+  //   onError: (err) => {
+  //     if (err.graphQLErrors[0]) {
+  //       setErrors(err.graphQLErrors[0]);
+  //     }
+  //     console.log(err);
+  //     setErrors(err);
+  //   },
+  // });
+
+  const [login, { data }] = useLazyQuery(LOGIN, {
+    onCompleted(data) {
+      console.log(data);
+      history.push("/");
+    },
+    onError: (err) => {
+      if (err.graphQLErrors[0]) {
+        setErrors(err.graphQLErrors[0]);
+      }
+      console.log(err);
+      setErrors(err);
+    },
+  });
+
+  const submitLogin = () => {
+    login({ variables });
+
+    onChangeVariable({ ...variables, email: "", password: "" });
   };
   return (
     <View style={styles.signContainerOuter}>
       <View style={styles.signContainerInner}>
-        <Text style={styles.signTitle}>登录</Text>
-
-        <View style={styles.inputContainer}>
-          <Text>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder='请输入邮箱'
-            value={email}
-            onChangeText={(email) => onChangeValues({ ...values, email })}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text>密码</Text>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={true}
-            placeholder='请输入密码'
-            value={password}
-            onChangeText={(password) => onChangeValues({ ...values, password })}
-          />
-        </View>
-        <View style={{ marginTop: 25 }}>
-          <SubmitButton onPress={submitLogin}>
-            <Text style={{ color: "white" }}>登录</Text>
-          </SubmitButton>
-        </View>
+        <Text style={{ fontSize: 25, fontWeight: "700" }}>BOT THK</Text>
+        <MyIcon size={60} />
       </View>
+      <Text style={styles.signTitle}>邮箱账号登录</Text>
+      <View style={styles.inputContainer}>
+        <Text>Email</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(email) => onChangeVariable({ ...variables, email })}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={{ letterSpacing: 1 }}>密码</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(password) =>
+            onChangeVariable({ ...variables, password })
+          }
+        />
+      </View>
+      <View style={{ marginTop: 25 }}>
+        <TouchableOpacity style={styles.submitBtn} onPress={submitLogin}>
+          <Text style={{ color: "#fff", fontWeight: "600" }}>登 录</Text>
+        </TouchableOpacity>
+      </View>
+      <Link to='/register'>
+        <Text>还没有账号？注册账号</Text>
+      </Link>
     </View>
   );
 };
@@ -56,7 +106,7 @@ export default Login;
 
 const styles = StyleSheet.create({
   signContainerOuter: {
-    height: "max-content",
+    height: "80%",
     width: "80%",
     display: "flex",
     alignItems: "center",
@@ -65,28 +115,19 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderWidth: 0,
     borderRadius: 20,
-    shadowColor: "#88a5bf",
-    shadowInset: { width: 3, height: 3 },
-    shadowOpacity: 0.48,
-    shadowRadius: 7,
   },
   signContainerInner: {
-    height: "100%",
-    width: "100%",
     display: "flex",
     alignItems: "center",
-    flexDirection: "column",
-    padding: 25,
+    flexDirection: "row",
+    paddingBottom: 35,
     borderWidth: 0,
     borderRadius: 20,
-    shadowColor: "#fff",
-    shadowInset: { width: -3, height: -3 },
-    shadowOpacity: 0.48,
-    shadowRadius: 7,
   },
   signTitle: {
-    fontSize: 22,
-    marginBottom: 50,
+    fontSize: 30,
+    marginBottom: 60,
+    letterSpacing: 2,
   },
   inputContainer: {
     display: "flex",
@@ -95,10 +136,20 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: 220,
-    marginBottom: 10,
+    width: 240,
+    marginBottom: 15,
     marginTop: 15,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
+    borderEndColor: "#000",
+  },
+  submitBtn: {
+    padding: 12,
+    backgroundColor: "#000",
+    width: 240,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 15,
   },
 });

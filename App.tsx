@@ -9,89 +9,93 @@ import Login from "./screens/Login";
 import { Entypo } from "@expo/vector-icons";
 import { MyIcon } from "./components/MyIcon";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./graphql/index";
 
 export default function App() {
   const [menuActive, setMenuActive] = useState(false);
 
   return (
-    <NativeRouter>
-      <View style={styles.container}>
-        <StatusBar style='auto' />
-        <View style={styles.nav}>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}>
-            <Text
-              style={{
-                color: "white",
-                fontWeight: "600",
-                marginRight: 10,
-                fontSize: 18,
-              }}>
-              BOT THK
-            </Text>
-            <MyIcon size={34} light />
-          </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}>
-            <FontAwesome5
-              name='search'
-              size={15}
-              color='white'
-              style={{ marginRight: 15 }}
-            />
-            <Entypo
-              name='menu'
-              size={24}
-              color='white'
-              onPress={() => setMenuActive(!menuActive)}
-            />
-          </View>
-        </View>
-        <View style={menuActive ? styles.menu : { display: "none" }}>
-          <View>
-            <Link to='/login'>
-              <Text style={styles.navLink}>登录</Text>
-            </Link>
-            <Link to='/register'>
-              <Text style={styles.navLink}>注册</Text>
-            </Link>
-          </View>
-          <Link to='/'>
-            <Text style={styles.navLink}>首页</Text>
-          </Link>
-          <Link to='/about'>
-            <Text style={styles.navLink}>关于</Text>
-          </Link>
-        </View>
-        <Switch>
-          <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
+    <ApolloProvider client={client}>
+      <NativeRouter>
+        <View style={styles.container}>
+          <StatusBar style='auto' />
+          <View style={styles.nav}>
             <View
               style={{
-                width: "100%",
-                height: "92%",
-                position: "absolute",
-                bottom: 0,
-                justifyContent: "center",
+                display: "flex",
+                flexDirection: "row",
                 alignItems: "center",
               }}>
-              <Route exact path='/' component={Login} />
-              <Route path='/about' component={About} />
-              <Route path='/register' component={Register} />
-              <Route path='/login' component={Login} />
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "600",
+                  marginRight: 10,
+                  fontSize: 18,
+                }}>
+                BOT THK
+              </Text>
+              <MyIcon size={50} light />
             </View>
-          </TouchableWithoutFeedback>
-        </Switch>
-      </View>
-    </NativeRouter>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
+              <FontAwesome5
+                name='search'
+                size={15}
+                color='white'
+                style={{ marginRight: 15 }}
+              />
+              <Entypo
+                name='menu'
+                size={24}
+                color='white'
+                onPress={() => setMenuActive(!menuActive)}
+              />
+            </View>
+          </View>
+          <View style={menuActive ? styles.menu : { display: "none" }}>
+            <View>
+              <Link to='/login'>
+                <Text style={styles.navLink}>登录</Text>
+              </Link>
+              <Link to='/register'>
+                <Text style={styles.navLink}>注册</Text>
+              </Link>
+            </View>
+            <Link to='/'>
+              <Text style={styles.navLink}>首页</Text>
+            </Link>
+            <Link to='/about'>
+              <Text style={styles.navLink}>关于</Text>
+            </Link>
+          </View>
+          <Switch>
+            <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
+              <View
+                style={{
+                  width: "100%",
+                  height: "92%",
+                  position: "absolute",
+                  bottom: 0,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <Route exact path='/' component={Login} />
+                <Route path='/about' component={About} />
+                <Route path='/register' component={Register} />
+                <Route path='/login' component={Login} />
+              </View>
+            </TouchableWithoutFeedback>
+          </Switch>
+        </View>
+      </NativeRouter>
+    </ApolloProvider>
   );
 }
 
