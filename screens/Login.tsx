@@ -7,20 +7,10 @@ import { MyIcon } from "../components/MyIcon";
 
 interface LoginProps {}
 const Login: React.FC<LoginProps> = ({}) => {
-  // const LOGIN = gql`
-  //   mutation Login($email: String!, $password: String!) {
-  //     login(email: $email, password: $password) {
-  //       accessToken
-  //     }
-  //   }
-  // `;
   const LOGIN = gql`
-    query Login($email: String!, $password: String!) {
+    mutation Login($email: String!, $password: String!) {
       login(email: $email, password: $password) {
-        token
-        email
-        username
-        createdAt
+        accessToken
       }
     }
   `;
@@ -34,28 +24,18 @@ const Login: React.FC<LoginProps> = ({}) => {
 
   const { email, password } = variables;
 
-  // const [login, { data }] = useMutation(LOGIN, {
-  //   update: (_, __) => history.push("/"),
-  //   onError: (err) => {
-  //     if (err.graphQLErrors[0]) {
-  //       setErrors(err.graphQLErrors[0]);
-  //     }
-  //     console.log(err);
-  //     setErrors(err);
-  //   },
-  // });
-
-  const [login, { data }] = useLazyQuery(LOGIN, {
-    onCompleted(data) {
-      console.log(data);
-      history.push("/");
-    },
+  const [login, { data }] = useMutation(LOGIN, {
+    update: (_, __) => history.push("/"),
     onError: (err) => {
       if (err.graphQLErrors[0]) {
         setErrors(err.graphQLErrors[0]);
       }
       console.log(err);
       setErrors(err);
+    },
+    onCompleted(data) {
+      console.log(data);
+      history.push("/");
     },
   });
 
@@ -66,10 +46,10 @@ const Login: React.FC<LoginProps> = ({}) => {
   };
   return (
     <View style={styles.signContainerOuter}>
-      <View style={styles.signContainerInner}>
+      {/* <View style={styles.signContainerInner}>
         <Text style={{ fontSize: 25, fontWeight: "700" }}>BOT THK</Text>
         <MyIcon size={60} />
-      </View>
+      </View> */}
       <Text style={styles.signTitle}>邮箱账号登录</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
@@ -126,7 +106,7 @@ const styles = StyleSheet.create({
   },
   signTitle: {
     fontSize: 30,
-    marginBottom: 60,
+    marginBottom: 100,
     letterSpacing: 2,
   },
   inputContainer: {
@@ -142,6 +122,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     borderEndColor: "#000",
+    paddingHorizontal: 8,
   },
   submitBtn: {
     padding: 12,
@@ -150,6 +131,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 15,
+    marginVertical: 25,
   },
 });

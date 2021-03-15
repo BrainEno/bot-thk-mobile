@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Link, useHistory } from "react-router-native";
-import { useMutation, gql, useLazyQuery } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { TouchableOpacity } from "react-native";
-import { SubmitButton } from "../components/SubmitButton";
 import { MyIcon } from "../components/MyIcon";
 
 interface RegisterProps {}
@@ -20,14 +19,15 @@ const Register: React.FC<RegisterProps> = ({}) => {
 
   const REGISTER = gql`
     mutation Register($username: String!, $email: String!, $password: String!) {
-      register(username: $username, email: $email, password: $password) {
-        accessToken
-      }
+      register(username: $username, email: $email, password: $password)
     }
   `;
 
-  const [register, { data }] = useMutation(REGISTER, {
-    update: (_, __) => history.push("/"),
+  const [register] = useMutation(REGISTER, {
+    onCompleted: (data) => {
+      console.log(data);
+      history.push("/");
+    },
     onError: (err) => {
       if (err.graphQLErrors[0]) {
       }
@@ -42,10 +42,10 @@ const Register: React.FC<RegisterProps> = ({}) => {
   };
   return (
     <View style={styles.signContainerOuter}>
-      <View style={styles.signContainerInner}>
+      {/* <View style={styles.signContainerInner}>
         <Text style={{ fontSize: 25, fontWeight: "700" }}>BOT THK</Text>
         <MyIcon size={60} />
-      </View>
+      </View> */}
       <Text style={styles.signTitle}>新账号注册</Text>
       <View style={styles.inputContainer}>
         <Text>用户名</Text>
@@ -81,7 +81,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
           <Text style={{ color: "#fff", fontWeight: "600" }}>注 册</Text>
         </TouchableOpacity>
       </View>
-      <Link to='/register'>
+      <Link to='/login'>
         <Text>已经有账号了？点击登录</Text>
       </Link>
     </View>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   signTitle: {
     fontSize: 30,
-    marginBottom: 60,
+    marginBottom: 100,
     letterSpacing: 2,
   },
   inputContainer: {
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     borderEndColor: "#000",
+    paddingHorizontal: 8,
   },
   submitBtn: {
     padding: 12,
@@ -136,6 +137,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 15,
+    marginVertical: 25,
   },
 });

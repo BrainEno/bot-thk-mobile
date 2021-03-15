@@ -11,6 +11,7 @@ import { MyIcon } from "./components/MyIcon";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphql/index";
+import Search from "./screens/Search";
 
 export default function App() {
   const [menuActive, setMenuActive] = useState(false);
@@ -45,12 +46,15 @@ export default function App() {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              <FontAwesome5
-                name='search'
-                size={15}
-                color='white'
-                style={{ marginRight: 15 }}
-              />
+              <Link to='/search'>
+                <FontAwesome5
+                  name='search'
+                  size={15}
+                  color='white'
+                  style={{ marginRight: 15 }}
+                  // onPress={handleSearch}
+                />
+              </Link>
               <Entypo
                 name='menu'
                 size={24}
@@ -86,10 +90,11 @@ export default function App() {
                   justifyContent: "center",
                   alignItems: "center",
                 }}>
-                <Route exact path='/' component={Login} />
+                <Route exact path='/' component={Home} />
                 <Route path='/about' component={About} />
                 <Route path='/register' component={Register} />
                 <Route path='/login' component={Login} />
+                <Route path='/search' component={Search} />
               </View>
             </TouchableWithoutFeedback>
           </Switch>
@@ -103,8 +108,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   nav: {
     width: "100%",
