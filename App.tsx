@@ -87,7 +87,6 @@ export default function App() {
                   height: "92%",
                   position: "absolute",
                   bottom: 0,
-                  justifyContent: "center",
                   alignItems: "center",
                 }}>
                 <Route exact path='/' component={Home} />
@@ -108,8 +107,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   nav: {
     width: "100%",
