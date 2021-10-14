@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
+import { match } from "react-router";
 import { Cat, LBlog } from "../types";
 import { BlogList } from "./BlogList";
 
 interface PostListProps {
   cat: Cat;
+  match: match;
 }
 
-export const PostList: React.FC<PostListProps> = ({ cat }) => {
+export const PostList: React.FC<PostListProps> = ({ cat, match }) => {
   const { name, blogs } = cat;
   const [selectedId, setSelectedId] = useState("");
   const renderItem = ({ item }: { item: LBlog }) => {
@@ -20,13 +22,14 @@ export const PostList: React.FC<PostListProps> = ({ cat }) => {
         onPress={() => setSelectedId(item.identifier)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
+        match={match}
       />
     );
   };
 
   return (
     <View style={styles.postList}>
-      {name && <Text style={styles.catName}>{name}</Text>}
+      {name && <Text style={styles.catName}>{name.toUpperCase()}</Text>}
       <FlatList
         data={blogs}
         renderItem={renderItem}
@@ -41,9 +44,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   catName: {
-    fontSize: 22,
-    fontWeight: "700",
+    fontSize: 25,
+    fontWeight: "500",
     letterSpacing: 1,
-    marginBottom: 12,
+    marginBottom: 15,
+    paddingVertical: 15,
+    borderBottomColor: "#ebebeb",
+    borderBottomWidth: 1,
+    textAlign: "center",
   },
 });

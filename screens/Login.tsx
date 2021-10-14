@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Link, useHistory } from "react-router-native";
 import { useMutation, gql, useLazyQuery } from "@apollo/client";
 import { TouchableOpacity } from "react-native";
-import { MyIcon } from "../components/MyIcon";
 
 interface LoginProps {}
 const Login: React.FC<LoginProps> = ({}) => {
@@ -46,10 +45,6 @@ const Login: React.FC<LoginProps> = ({}) => {
   };
   return (
     <View style={styles.signContainerOuter}>
-      {/* <View style={styles.signContainerInner}>
-        <Text style={{ fontSize: 25, fontWeight: "700" }}>BOT THK</Text>
-        <MyIcon size={60} />
-      </View> */}
       <Text style={styles.signTitle}>邮箱账号登录</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
@@ -91,7 +86,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
-    paddingTop: 10,
+    paddingTop: 80,
     paddingBottom: 20,
     borderWidth: 0,
     borderRadius: 20,

@@ -1,55 +1,20 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { PostList } from "../components/PostList";
-import { Cat } from "../types";
+import React, { useEffect } from "react";
+import { View, StyleSheet, ScrollView, Text } from "react-native";
+import { match } from "react-router";
 
-const cats = [
-  {
-    name: "novel",
-    blogs: [
-      {
-        identifier: "1",
-        title: "blog1",
-        desc: "my first blog",
-        author: "author1",
-        createdAt: "2021/3/28",
-        body: "blog1 body",
-      },
-      {
-        identifier: "3",
-        title: "blog3",
-        desc: "my third blog",
-        author: "author3",
-        createdAt: "2021/1/28",
-        body: "blog3 body",
-      },
-    ],
-  },
-  {
-    name: "poem",
-    blogs: [
-      {
-        identifier: "2",
-        title: "blog2",
-        desc: "my second blog",
-        author: "author2",
-        createdAt: "2021/2/28",
-        body: "blog2 body",
-      },
-    ],
-  },
-];
+interface HomeProps {
+  match: match;
+}
 
-const Home: React.FC = () => {
+const Home: React.FC<HomeProps> = ({ match }) => {
+  useEffect(() => {}, []);
+
   return (
-    <View style={styles.home}>
-      <FlatList
-        data={cats}
-        renderItem={({ item }) => <PostList cat={item} />}
-        keyExtractor={(cat) => cat.name}
-      />
-    </View>
+    <ScrollView style={styles.home} keyboardShouldPersistTaps='always'>
+      <View>
+        <Text>Homepage</Text>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -57,7 +22,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   home: {
-    padding: 20,
+    paddingHorizontal: 28,
     width: "100%",
   },
 });

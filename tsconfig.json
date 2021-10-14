@@ -3,11 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "jsx": "react-native",
-    "lib": [
-      "es6",
-      "esnext.asynciterable",
-      "dom"
-    ],
+    "lib": ["es6", "esnext.asynciterable", "dom"],
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -19,5 +15,9 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "baseUrl": "."
-  }
+  },
+  "types": [],
+  "typeRoots": ["./types"],
+  "extends": "expo/tsconfig.base",
+  "files": ["./types/index.d.ts", "./types/env.d.ts"]
 }

@@ -1,6 +1,8 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
+const GRAPHQL_URI = process.env.GRAPHQL_URI;
+
 export const client = new ApolloClient({
-  uri: "http://192.168.3.81/:4000/graphql",
+  uri: GRAPHQL_URI,
   cache: new InMemoryCache(),
 });

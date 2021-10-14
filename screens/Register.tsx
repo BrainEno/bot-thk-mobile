@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Link, useHistory } from "react-router-native";
 import { useMutation, gql } from "@apollo/client";
 import { TouchableOpacity } from "react-native";
-import { MyIcon } from "../components/MyIcon";
 
 interface RegisterProps {}
 const Register: React.FC<RegisterProps> = ({}) => {
@@ -42,10 +41,6 @@ const Register: React.FC<RegisterProps> = ({}) => {
   };
   return (
     <View style={styles.signContainerOuter}>
-      {/* <View style={styles.signContainerInner}>
-        <Text style={{ fontSize: 25, fontWeight: "700" }}>BOT THK</Text>
-        <MyIcon size={60} />
-      </View> */}
       <Text style={styles.signTitle}>新账号注册</Text>
       <View style={styles.inputContainer}>
         <Text>用户名</Text>
@@ -97,10 +92,9 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
-    paddingTop: 10,
-    paddingBottom: 20,
+    paddingTop: "8%",
+    paddingBottom: "8%",
     borderWidth: 0,
-    borderRadius: 20,
   },
   signContainerInner: {
     display: "flex",

@@ -12,6 +12,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphql/index";
 import Search from "./screens/Search";
+import Blogs from "./screens/Blogs";
 
 export default function App() {
   const [menuActive, setMenuActive] = useState(false);
@@ -75,6 +76,9 @@ export default function App() {
             <Link to='/'>
               <Text style={styles.navLink}>首页</Text>
             </Link>
+            <Link to='/collection'>
+              <Text style={styles.navLink}>收藏</Text>
+            </Link>
             <Link to='/about'>
               <Text style={styles.navLink}>关于</Text>
             </Link>
@@ -94,6 +98,7 @@ export default function App() {
                 <Route path='/register' component={Register} />
                 <Route path='/login' component={Login} />
                 <Route path='/search' component={Search} />
+                <Route path='/blogs/:id' component={Blogs} />
               </View>
             </TouchableWithoutFeedback>
           </Switch>
