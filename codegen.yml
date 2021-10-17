@@ -1,11 +1,17 @@
+overwrite: true
 schema: http://localhost:4000/graphql
-documents: ./graphql/gqls/*.gql
 generates:
-  types.ts:
+  graphql/types.ts:
     plugins:
       - typescript
+      - typescript-resolvers
+      - typescript-react-apollo
     config:
+      maybeValue: 'T extends PromiseLike<infer U> ? Promise<U | null> : T | null'
       avoidOptionals: true
       constEnums: true
+      withHooks: true
+      noNamespaces: true
+ 
           
           

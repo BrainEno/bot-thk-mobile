@@ -1,14 +1,18 @@
-import { IUser } from ".";
 import { authActionTypes } from "./auth.types";
+import { UserInfo } from "./index";
 
-export const loginStart = (formData: FormData) => ({
-  type: authActionTypes.LOGIN_START,
-  payload: formData,
+export const checkUserAuth = () => ({
+  type: authActionTypes.CHECK_USER_AUTH,
 });
 
-export const loginSuccess = (currentUser: IUser) => ({
+export const loginStart = (variables: { email: string; password: string }) => ({
+  type: authActionTypes.LOGIN_START,
+  payload: variables,
+});
+
+export const loginSuccess = (currUser: UserInfo) => ({
   type: authActionTypes.LOGIN_SUCCESS,
-  payload: currentUser,
+  payload: currUser,
 });
 
 export const loginFailure = (error: string) => ({

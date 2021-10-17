@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
-import { Blog } from "../types";
+import { Blog } from "../graphql/types";
 
 interface ArticleProps {
   blog: Blog & { createdAt: any };

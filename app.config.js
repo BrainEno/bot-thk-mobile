@@ -26,7 +26,7 @@ module.exports = {
     favicon: "./assets/favicon.png",
     build: {
       babel: {
-        include: ["react-router-native"],
+        include: ["react-router-native", "@react-native-community/cookies"],
       },
     },
   },

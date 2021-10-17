@@ -1,50 +1,55 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Link, useHistory } from "react-router-native";
-import { useMutation, gql, useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { TouchableOpacity } from "react-native";
+import { Alert, AlertType } from "../components/Alert";
+import { useDispatch } from "react-redux";
+import { loginMutation } from "../graphql/user/mutations/login";
+import { loginStart } from "../redux/auth/auth.actions";
 
-interface LoginProps {}
-const Login: React.FC<LoginProps> = ({}) => {
-  const LOGIN = gql`
-    mutation Login($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
-        accessToken
-      }
-    }
-  `;
-
+const Login = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [variables, onChangeVariable] = useState({
     email: "",
     password: "",
   });
+  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const { email, password } = variables;
 
-  const [login, { data }] = useMutation(LOGIN, {
-    update: (_, __) => history.push("/"),
-    onError: (err) => {
-      if (err.graphQLErrors[0]) {
-        setErrors(err.graphQLErrors[0]);
-      }
-      console.log(err);
-      setErrors(err);
-    },
-    onCompleted(data) {
-      console.log(data);
-      history.push("/");
-    },
-  });
+  // const [login, { data }] = useMutation(loginMutation, {
+  //   update: (_, __) => history.push("/"),
+  //   onError: (err) => {
+  //     if (err.graphQLErrors[0]) {
+  //       setErrors(err.graphQLErrors[0]);
+  //     }
+  //     console.log(err);
+  //     setErrors(err);
+  //   },
+  //   onCompleted(data) {
+  //     console.log(data);
+  //     setMessage("登录成功");
+  //     setTimeout(() => setMessage(""), 2000);
+  //     history.push("/");
+  //   },
+  // });
 
   const submitLogin = () => {
-    login({ variables });
-
+    // login({ variables });
+    dispatch(loginStart(variables));
+    history.push("/");
     onChangeVariable({ ...variables, email: "", password: "" });
   };
+
   return (
     <View style={styles.signContainerOuter}>
+      {message ? <Alert message={message} type={AlertType.SUCCESS} /> : null}
+      {Object.keys(errors).length > 0 ? (
+        <Alert message={errors.toString()} type={AlertType.ERROR} />
+      ) : null}
       <Text style={styles.signTitle}>邮箱账号登录</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>

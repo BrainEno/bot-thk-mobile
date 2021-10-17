@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Platform,
+} from "react-native";
 import { NativeRouter, Route, Link, Switch } from "react-router-native";
 import Home from "./screens/Home";
 import About from "./screens/About";
@@ -10,106 +16,119 @@ import { Entypo } from "@expo/vector-icons";
 import { MyIcon } from "./components/MyIcon";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ApolloProvider } from "@apollo/client";
-import { client } from "./graphql/index";
+import { client } from "./graphql/client";
 import Search from "./screens/Search";
 import Blogs from "./screens/Blogs";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+// import { checkUserAuth } from "./redux/auth/auth.actions";
 
 export default function App() {
   const [menuActive, setMenuActive] = useState(false);
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(checkUserAuth());
+  // }, [dispatch]);
 
   return (
     <ApolloProvider client={client}>
-      <NativeRouter>
-        <View style={styles.container}>
-          <StatusBar style='auto' />
-          <View style={styles.nav}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}>
-              <Text
-                style={{
-                  color: "white",
-                  fontWeight: "600",
-                  marginRight: 10,
-                  fontSize: 18,
-                }}>
-                BOT THK
-              </Text>
-              <MyIcon size={50} light />
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}>
-              <Link to='/search'>
-                <FontAwesome5
-                  name='search'
-                  size={15}
-                  color='white'
-                  style={{ marginRight: 15 }}
-                  // onPress={handleSearch}
-                />
-              </Link>
-              <Entypo
-                name='menu'
-                size={24}
-                color='white'
-                onPress={() => setMenuActive(!menuActive)}
-              />
-            </View>
-          </View>
-          <View style={menuActive ? styles.menu : { display: "none" }}>
-            <View>
-              <Link to='/login'>
-                <Text style={styles.navLink}>登录</Text>
-              </Link>
-              <Link to='/register'>
-                <Text style={styles.navLink}>注册</Text>
-              </Link>
-            </View>
-            <Link to='/'>
-              <Text style={styles.navLink}>首页</Text>
-            </Link>
-            <Link to='/collection'>
-              <Text style={styles.navLink}>收藏</Text>
-            </Link>
-            <Link to='/about'>
-              <Text style={styles.navLink}>关于</Text>
-            </Link>
-          </View>
-          <Switch>
-            <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
+      <Provider store={store}>
+        <NativeRouter>
+          <View style={styles.container}>
+            {/* <StatusBar translucent={true} style='auto' animated={true} /> */}
+            <View style={styles.nav}>
               <View
                 style={{
-                  width: "100%",
-                  height: "92%",
-                  position: "absolute",
-                  bottom: 0,
+                  display: "flex",
+                  flexDirection: "row",
                   alignItems: "center",
                 }}>
-                <Route exact path='/' component={Home} />
-                <Route path='/about' component={About} />
-                <Route path='/register' component={Register} />
-                <Route path='/login' component={Login} />
-                <Route path='/search' component={Search} />
-                <Route path='/blogs/:id' component={Blogs} />
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "600",
+                    marginRight: 10,
+                    fontSize: 18,
+                  }}>
+                  BOT THK
+                </Text>
+                <MyIcon size={50} light />
               </View>
-            </TouchableWithoutFeedback>
-          </Switch>
-        </View>
-      </NativeRouter>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}>
+                <Link to='/search'>
+                  <FontAwesome5
+                    name='search'
+                    size={15}
+                    color='white'
+                    style={{ marginRight: 15 }}
+                    // onPress={handleSearch}
+                  />
+                </Link>
+                <Entypo
+                  name='menu'
+                  size={24}
+                  color='white'
+                  onPress={() => setMenuActive(!menuActive)}
+                />
+              </View>
+            </View>
+            <View style={menuActive ? styles.menu : { display: "none" }}>
+              <View>
+                <Link to='/login'>
+                  <Text style={styles.navLink}>登录</Text>
+                </Link>
+                <Link to='/register'>
+                  <Text style={styles.navLink}>注册</Text>
+                </Link>
+              </View>
+              <Link to='/'>
+                <Text style={styles.navLink}>首页</Text>
+              </Link>
+              <Link to='/collection'>
+                <Text style={styles.navLink}>收藏</Text>
+              </Link>
+              <Link to='/about'>
+                <Text style={styles.navLink}>关于</Text>
+              </Link>
+            </View>
+            <Switch>
+              <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: "92%",
+                    position: "absolute",
+                    bottom: 0,
+                    alignItems: "center",
+                  }}>
+                  <Route exact path='/' component={Home} />
+                  <Route path='/about' component={About} />
+                  <Route path='/register' component={Register} />
+                  <Route path='/login' component={Login} />
+                  <Route path='/search' component={Search} />
+                  <Route path='/blogs/:id' component={Blogs} />
+                </View>
+              </TouchableWithoutFeedback>
+            </Switch>
+          </View>
+        </NativeRouter>
+      </Provider>
     </ApolloProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Platform.select({
+      android: Platform.Version <= 20 ? 0 : null,
+    }),
     flex: 1,
     backgroundColor: "#f5f5f5",
   },

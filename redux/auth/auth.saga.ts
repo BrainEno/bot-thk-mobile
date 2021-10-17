@@ -1,38 +1,31 @@
 import { takeLatest, all, put, call } from "redux-saga/effects";
 import { authActionTypes } from "./auth.types";
-import { loginStart, loginSuccess, loginFailure } from "./auth.actions";
-import axios from "axios";
-import { IUser } from ".";
+import { loginSuccess, loginFailure } from "./auth.actions";
+import { loginRequest } from "../../graphql/mutations/login";
+import { getCurrUser } from "../../graphql/mutations/login";
 
-const authenticate = async (formData: any) => {
-  try {
-    const res = await axios.post(
-      "https://localhost:5001/Users/authenticate",
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log(res.data);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+export function* checkUserAuthenticate() {
+  yield console.log("auth");
+}
 
-export function* loginWithUsername({ payload }: { payload: any }) {
+export function* loginWithEmail({ payload }: { payload: any }) {
   try {
-    const user: IUser = yield authenticate(payload);
-    yield put(loginSuccess(user));
+    const accessToken = yield loginRequest(payload);
+    const { username, userRole, avatar } = yield getCurrUser(accessToken);
+    yield put(loginSuccess({ username, userRole, avatar }));
   } catch (error) {
     yield put(loginFailure(error as any));
   }
 }
 
 export function* onLoginStart() {
-  yield takeLatest(authActionTypes.LOGIN_START as any, loginWithUsername);
+  yield takeLatest(authActionTypes.LOGIN_START as any, loginWithEmail);
+}
+
+export function* onCheckUserAuth() {
+  yield takeLatest(authActionTypes.CHECK_USER_AUTH, checkUserAuthenticate);
 }
 
 export function* authSagas() {
-  yield all([call(onLoginStart)]);
+  yield all([call(onLoginStart), call(onCheckUserAuth)]);
 }

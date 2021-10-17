@@ -1,13 +1,14 @@
+import { Roles } from "../../graphql/types";
 import { authActionTypes } from "./auth.types";
 
-export interface IUser {
-  id: number;
+export interface UserInfo {
   username: string;
-  token: string;
+  userRole: Roles;
+  avatar: string;
 }
 
-interface IAuthState {
-  currentUser: null | IUser;
+interface AuthState {
+  currentUser: null | UserInfo;
   error: null | any;
   loading: boolean;
 }
@@ -19,7 +20,7 @@ const initialState = {
 };
 
 const authReducer = (
-  state: IAuthState = initialState,
+  state: AuthState = initialState,
   action: { type: authActionTypes; payload: any }
 ) => {
   switch (action.type) {

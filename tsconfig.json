@@ -19,5 +19,5 @@
   "types": [],
   "typeRoots": ["./types"],
   "extends": "expo/tsconfig.base",
-  "files": ["./types/index.d.ts", "./types/env.d.ts"]
+  "files": ["./types/index.d.ts"]
 }
