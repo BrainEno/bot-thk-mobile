@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -7,7 +6,13 @@ import {
   TouchableWithoutFeedback,
   Platform,
 } from "react-native";
-import { NativeRouter, Route, Link, Switch } from "react-router-native";
+import {
+  NativeRouter,
+  Route,
+  Link,
+  Switch,
+  Redirect,
+} from "react-router-native";
 import Home from "./screens/Home";
 import About from "./screens/About";
 import Register from "./screens/Register";
@@ -19,110 +24,121 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphql/client";
 import Search from "./screens/Search";
 import Blogs from "./screens/Blogs";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store } from "./redux/store";
 // import { checkUserAuth } from "./redux/auth/auth.actions";
+import { selectCurrentUser } from "./redux/auth/auth.selector";
+import NewPost from "./screens/NewPost";
 
-export default function App() {
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};
+
+const App = () => {
   const [menuActive, setMenuActive] = useState(false);
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(checkUserAuth());
-  // }, [dispatch]);
+  const currUser = useSelector(selectCurrentUser);
 
   return (
     <ApolloProvider client={client}>
-      <Provider store={store}>
-        <NativeRouter>
-          <View style={styles.container}>
-            {/* <StatusBar translucent={true} style='auto' animated={true} /> */}
-            <View style={styles.nav}>
-              <View
+      <NativeRouter>
+        <View style={styles.container}>
+          {/* <StatusBar translucent={true} style='auto' animated={true} /> */}
+          <View style={styles.nav}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
+              <Text
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
+                  color: "white",
+                  fontWeight: "600",
+                  marginRight: 10,
+                  fontSize: 18,
                 }}>
-                <Text
-                  style={{
-                    color: "white",
-                    fontWeight: "600",
-                    marginRight: 10,
-                    fontSize: 18,
-                  }}>
-                  BOT THK
-                </Text>
-                <MyIcon size={50} light />
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}>
-                <Link to='/search'>
-                  <FontAwesome5
-                    name='search'
-                    size={15}
-                    color='white'
-                    style={{ marginRight: 15 }}
-                    // onPress={handleSearch}
-                  />
-                </Link>
-                <Entypo
-                  name='menu'
-                  size={24}
+                BOT THK
+              </Text>
+              <MyIcon size={50} light />
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
+              <Link to='/search'>
+                <FontAwesome5
+                  name='search'
+                  size={15}
                   color='white'
-                  onPress={() => setMenuActive(!menuActive)}
+                  style={{ marginRight: 15 }}
+                  // onPress={handleSearch}
+                />
+              </Link>
+              <Entypo
+                name='menu'
+                size={24}
+                color='white'
+                onPress={() => setMenuActive(!menuActive)}
+              />
+            </View>
+          </View>
+          <View style={menuActive ? styles.menu : { display: "none" }}>
+            <View>
+              <Link to='/login'>
+                <Text style={styles.navLink}>登录</Text>
+              </Link>
+              <Link to='/register'>
+                <Text style={styles.navLink}>注册</Text>
+              </Link>
+            </View>
+            <Link to='/'>
+              <Text style={styles.navLink}>首页</Text>
+            </Link>
+            <Link to='/collection'>
+              <Text style={styles.navLink}>收藏</Text>
+            </Link>
+            <Link to='/about'>
+              <Text style={styles.navLink}>关于</Text>
+            </Link>
+          </View>
+          <Switch>
+            <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
+              <View
+                style={{
+                  width: "100%",
+                  height: "92%",
+                  position: "absolute",
+                  bottom: 0,
+                  alignItems: "center",
+                }}>
+                <Route exact path='/' component={Home} />
+                <Route path='/about' component={About} />
+                <Route path='/register' component={Register} />
+                <Route path='/login' component={Login} />
+                <Route path='/search' component={Search} />
+                <Route path='/blogs/:id' component={Blogs} />
+                <Route
+                  path='/new-post'
+                  exact
+                  render={() =>
+                    currUser ? <NewPost /> : <Redirect to='/login' />
+                  }
                 />
               </View>
-            </View>
-            <View style={menuActive ? styles.menu : { display: "none" }}>
-              <View>
-                <Link to='/login'>
-                  <Text style={styles.navLink}>登录</Text>
-                </Link>
-                <Link to='/register'>
-                  <Text style={styles.navLink}>注册</Text>
-                </Link>
-              </View>
-              <Link to='/'>
-                <Text style={styles.navLink}>首页</Text>
-              </Link>
-              <Link to='/collection'>
-                <Text style={styles.navLink}>收藏</Text>
-              </Link>
-              <Link to='/about'>
-                <Text style={styles.navLink}>关于</Text>
-              </Link>
-            </View>
-            <Switch>
-              <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
-                <View
-                  style={{
-                    width: "100%",
-                    height: "92%",
-                    position: "absolute",
-                    bottom: 0,
-                    alignItems: "center",
-                  }}>
-                  <Route exact path='/' component={Home} />
-                  <Route path='/about' component={About} />
-                  <Route path='/register' component={Register} />
-                  <Route path='/login' component={Login} />
-                  <Route path='/search' component={Search} />
-                  <Route path='/blogs/:id' component={Blogs} />
-                </View>
-              </TouchableWithoutFeedback>
-            </Switch>
-          </View>
-        </NativeRouter>
-      </Provider>
+            </TouchableWithoutFeedback>
+          </Switch>
+        </View>
+      </NativeRouter>
     </ApolloProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -165,3 +181,5 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
 });
+
+export default AppWrapper;

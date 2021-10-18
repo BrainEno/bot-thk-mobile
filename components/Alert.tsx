@@ -20,11 +20,32 @@ export const Alert: React.FC<AlertProps> = ({
   const renderIcon = (type: AlertType) => {
     switch (type) {
       case AlertType.SUCCESS:
-        return <AntDesign name='checkcircle' size={14} color='#5CB660' />;
+        return (
+          <AntDesign
+            style={styles.alertIcon}
+            name='checkcircle'
+            size={14}
+            color='#5CB660'
+          />
+        );
       case AlertType.ERROR:
-        return <AntDesign name='closecircleo' size={14} color='#F06360' />;
+        return (
+          <AntDesign
+            style={styles.alertIcon}
+            name='closecircleo'
+            size={14}
+            color='#F06360'
+          />
+        );
       case AlertType.INFO:
-        return <AntDesign name='infocirlceo' size={14} color='#1AB1F5' />;
+        return (
+          <AntDesign
+            style={styles.alertIcon}
+            name='infocirlceo'
+            size={14}
+            color='#1AB1F5'
+          />
+        );
     }
   };
 
@@ -39,19 +60,30 @@ export const Alert: React.FC<AlertProps> = ({
             ? "#E5F6FD"
             : "#FFF4E5",
       }}>
-      {renderIcon(type)}
-      <Text style={styles[`${type.toLowerCase()}`]}>{message}</Text>
+      <Text style={styles.alertMsg}>
+        {renderIcon(type)}
+        {message}
+      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   alert: {
-    height: 20,
-    padding: "4px 8px",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     zIndex: 10,
+  },
+  alertMsg: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  alertIcon: {
+    marginRight: 5,
   },
 });
