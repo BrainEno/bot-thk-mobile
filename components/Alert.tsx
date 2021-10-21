@@ -62,7 +62,7 @@ export const Alert: React.FC<AlertProps> = ({
       }}>
       <Text style={styles.alertMsg}>
         {renderIcon(type)}
-        {message}
+        {"  " + message}
       </Text>
     </View>
   );

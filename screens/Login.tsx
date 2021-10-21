@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 import { TouchableOpacity } from "react-native";
 import { Alert, AlertType } from "../components/Alert";
 import { useDispatch } from "react-redux";
-import { loginMutation } from "../graphql/user/mutations/login";
+import { loginMutation } from "../graphql/mutations/login";
 import { loginStart } from "../redux/auth/auth.actions";
 
 const Login = () => {

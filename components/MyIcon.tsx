@@ -1,6 +1,5 @@
 import React from "react";
-import { GestureResponderEvent } from "react-native";
-import { Image, View } from "react-native";
+import { Image, View, GestureResponderEvent } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface MyIconProps {

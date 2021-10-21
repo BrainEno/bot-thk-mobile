@@ -20,7 +20,11 @@ const Home: React.FC<HomeProps> = ({ match }) => {
         <Text>Bottom Think</Text>
         <Text>{currUser ? "Hello, " + currUser.username : "please login"}</Text>
       </View>
-      <Alert message='登录成功!' type={AlertType.SUCCESS} />
+      {currUser ? (
+        <Alert message='登录成功!' type={AlertType.SUCCESS} />
+      ) : (
+        <Alert message='登录账号后可发布文章' type={AlertType.INFO} />
+      )}
       <AntDesign
         style={styles.newPost}
         name='pluscircle'
