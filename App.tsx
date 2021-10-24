@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-native";
-import Home from "./screens/Home";
+// import Home from "./screens/Home";
 import About from "./screens/About";
 import Register from "./screens/Register";
 import Login from "./screens/Login";
@@ -25,9 +25,8 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./graphql/client";
 import Search from "./screens/Search";
 import Blogs from "./screens/Blogs";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
 import { store } from "./redux/store";
-// import { checkUserAuth } from "./redux/auth/auth.actions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { selectCurrentUser } from "./redux/auth/auth.selector";
 import NewPost from "./screens/NewPost";
@@ -35,7 +34,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
+import { checkUserAuth, logoutStart } from "./redux/auth/auth.actions";
+import Dashboard from "./screens/Dashboard";
+import { useHistory } from "react-router-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AppWrapper = () => {
   return (
@@ -48,10 +50,15 @@ const AppWrapper = () => {
 const App = () => {
   const [menuActive, setMenuActive] = useState(false);
   const currUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
-  const handleAvatarClick = () => {
-    console.log("dashboard");
+  const handleLogout = () => {
+    dispatch(logoutStart());
   };
+
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, [dispatch]);
 
   return (
     <ApolloProvider client={client}>
@@ -59,23 +66,25 @@ const App = () => {
         <SafeAreaView style={styles.container}>
           <View style={styles.container}>
             <View style={styles.nav}>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}>
-                <Text
+              <Link to='/'>
+                <View
                   style={{
-                    color: "white",
-                    fontWeight: "600",
-                    marginRight: 10,
-                    fontSize: 18,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}>
-                  BOT THK
-                </Text>
-                <MyIcon size={50} light />
-              </View>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontWeight: "600",
+                      marginRight: 10,
+                      fontSize: 18,
+                    }}>
+                    BOT THK
+                  </Text>
+                  <MyIcon size={50} light />
+                </View>
+              </Link>
               <View
                 style={{
                   display: "flex",
@@ -89,7 +98,6 @@ const App = () => {
                     size={15}
                     color='white'
                     style={{ marginRight: 15 }}
-                    // onPress={handleSearch}
                   />
                 </Link>
                 <Entypo
@@ -104,15 +112,16 @@ const App = () => {
               {currUser ? (
                 <View style={styles.infoWrp}>
                   <View>
-                    <Avatar
-                      style={styles.avatar}
-                      source={{
-                        uri: currUser?.avatar
-                          ? currUser.avatar
-                          : "https://res.cloudinary.com/hapmoniym/image/upload/v1608712074/icons/avatar_w5us1g.png",
-                      }}
-                      handleOpen={handleAvatarClick}
-                    />
+                    <Link to='/dashboard'>
+                      <Avatar
+                        style={styles.avatar}
+                        source={{
+                          uri: currUser?.avatar
+                            ? currUser.avatar
+                            : "https://res.cloudinary.com/hapmoniym/image/upload/v1608712074/icons/avatar_w5us1g.png",
+                        }}
+                      />
+                    </Link>
                     <View style={styles.badge} />
                   </View>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -124,29 +133,12 @@ const App = () => {
                       color='#fff'
                     />
                   </View>
-
                   <View style={styles.follow}>
                     <Text style={styles.followNum}>2</Text>
                     <Text style={styles.followLabel}>正在关注 · </Text>
                     <Text style={styles.followNum}>0</Text>
                     <Text style={styles.followLabel}>关注者</Text>
                   </View>
-                </View>
-              ) : null}
-              {!currUser ? (
-                <View>
-                  <Link to='/login'>
-                    <View style={styles.navItem}>
-                      <Entypo name='login' size={18} color='#fff' />
-                      <Text style={styles.navLink}>登录</Text>
-                    </View>
-                  </Link>
-                  <Link to='/register'>
-                    <View style={styles.navItem}>
-                      <Feather name='user' size={18} color='#fff' />
-                      <Text style={styles.navLink}>注册</Text>
-                    </View>
-                  </Link>
                 </View>
               ) : null}
               <Link to='/'>
@@ -185,12 +177,29 @@ const App = () => {
               </Link>
               {currUser ? (
                 <Link to='/login'>
-                  <View style={styles.navItem}>
-                    <Feather name='log-out' size={18} color='#fff' />
-                    <Text style={styles.navLink}>退出</Text>
-                  </View>
+                  <TouchableWithoutFeedback onPress={handleLogout}>
+                    <View style={styles.navItem}>
+                      <Feather name='log-out' size={18} color='#fff' />
+                      <Text style={styles.navLink}>退出</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
                 </Link>
-              ) : null}
+              ) : (
+                <View>
+                  <Link to='/login'>
+                    <View style={styles.navItem}>
+                      <Entypo name='login' size={18} color='#fff' />
+                      <Text style={styles.navLink}>登录</Text>
+                    </View>
+                  </Link>
+                  <Link to='/register'>
+                    <View style={styles.navItem}>
+                      <Feather name='user' size={18} color='#fff' />
+                      <Text style={styles.navLink}>注册</Text>
+                    </View>
+                  </Link>
+                </View>
+              )}
             </View>
 
             <Switch>
@@ -215,6 +224,13 @@ const App = () => {
                     exact
                     render={() =>
                       currUser ? <NewPost /> : <Redirect to='/login' />
+                    }
+                  />
+                  <Route
+                    path='/dashboard'
+                    exact
+                    render={() =>
+                      currUser ? <Dashboard /> : <Redirect to='/login' />
                     }
                   />
                 </View>

@@ -6,11 +6,12 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "generate": "graphql-codegen",
+    "gen": "graphql-codegen",
     "debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
+    "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/cookies": "^5.0.1",
     "@react-native-community/masked-view": "0.1.11",
     "@types/react-native-dotenv": "^0.2.0",

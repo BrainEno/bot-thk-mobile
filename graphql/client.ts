@@ -14,8 +14,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       );
-
-      loginFailure(message);
     });
 
   if (networkError) console.log(`[Network error]: ${networkError}`);

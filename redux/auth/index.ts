@@ -9,7 +9,7 @@ export interface UserInfo {
 
 interface AuthState {
   currentUser: null | UserInfo;
-  error: null | any;
+  error: null | string;
   loading: boolean;
 }
 
@@ -25,19 +25,32 @@ const authReducer = (
 ) => {
   switch (action.type) {
     case authActionTypes.LOGIN_START:
+    case authActionTypes.LOGOUT_START:
       return {
         ...state,
         loading: true,
+        error: null,
       };
     case authActionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         currentUser: action.payload,
+        loading: false,
+        error: null,
       };
+    case authActionTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        currentUser: null,
+        loading: false,
+        error: null,
+      };
+    case authActionTypes.LOGOUT_FAILURE:
     case authActionTypes.LOGIN_FAILURE:
       return {
         ...state,
         error: action.payload,
+        loading: false,
       };
     default:
       return state;

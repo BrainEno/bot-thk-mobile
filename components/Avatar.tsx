@@ -7,25 +7,17 @@ import {
   ImageStyle,
   StyleSheet,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface AvatarProps {
   source: ImageSourcePropType;
   style?: StyleProp<ImageStyle>;
-  handleOpen: () => void | undefined;
 }
 
-export const Avatar: React.FC<AvatarProps> = ({
-  source,
-  style,
-  handleOpen,
-}) => {
+export const Avatar: React.FC<AvatarProps> = ({ source, style }) => {
   return (
-    <TouchableOpacity onPress={handleOpen}>
-      <View>
-        <Image source={source} style={style} />
-      </View>
-    </TouchableOpacity>
+    <View>
+      <Image source={source} style={style} />
+    </View>
   );
 };
 

@@ -1,62 +1,39 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 import { Link, useHistory } from "react-router-native";
-import { useMutation } from "@apollo/client";
 import { TouchableOpacity } from "react-native";
-import { Alert, AlertType } from "../components/Alert";
-import { useDispatch } from "react-redux";
-import { loginMutation } from "../graphql/mutations/login";
+import { useDispatch, useSelector } from "react-redux";
 import { loginStart } from "../redux/auth/auth.actions";
+import { selectAuthError } from "../redux/auth/auth.selector";
 
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [variables, onChangeVariable] = useState({
+  const [variables, setVariables] = useState({
     email: "",
     password: "",
   });
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState({});
+
+  const error = useSelector(selectAuthError);
 
   const { email, password } = variables;
 
-  // const [login, { data }] = useMutation(loginMutation, {
-  //   update: (_, __) => history.push("/"),
-  //   onError: (err) => {
-  //     if (err.graphQLErrors[0]) {
-  //       setErrors(err.graphQLErrors[0]);
-  //     }
-  //     console.log(err);
-  //     setErrors(err);
-  //   },
-  //   onCompleted(data) {
-  //     console.log(data);
-  //     setMessage("登录成功");
-  //     setTimeout(() => setMessage(""), 2000);
-  //     history.push("/");
-  //   },
-  // });
-
   const submitLogin = () => {
-    // login({ variables });
     dispatch(loginStart(variables));
+    setVariables({ ...variables, email: "", password: "" });
+    if (error) Alert.alert(error);
     history.push("/");
-    onChangeVariable({ ...variables, email: "", password: "" });
   };
 
   return (
     <View style={styles.signContainerOuter}>
-      {message ? <Alert message={message} type={AlertType.SUCCESS} /> : null}
-      {Object.keys(errors).length > 0 ? (
-        <Alert message={errors.toString()} type={AlertType.ERROR} />
-      ) : null}
       <Text style={styles.signTitle}>邮箱账号登录</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
         <TextInput
           style={styles.input}
           value={email}
-          onChangeText={(email) => onChangeVariable({ ...variables, email })}
+          onChangeText={(email) => setVariables({ ...variables, email })}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -65,9 +42,7 @@ const Login = () => {
           style={styles.input}
           secureTextEntry={true}
           value={password}
-          onChangeText={(password) =>
-            onChangeVariable({ ...variables, password })
-          }
+          onChangeText={(password) => setVariables({ ...variables, password })}
         />
       </View>
       <View style={{ marginTop: 25 }}>
