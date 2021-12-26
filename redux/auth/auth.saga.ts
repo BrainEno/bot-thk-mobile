@@ -20,7 +20,7 @@ export function* checkUserAuthenticate() {
     const { username, userRole, avatar } = yield getCurrUser(authenticated);
     yield put(loginSuccess({ username, userRole, avatar }));
   } catch (error) {
-    console.log(error);
+    console.log("用户未认证,请登录");
   }
 }
 

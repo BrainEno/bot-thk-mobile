@@ -26,23 +26,27 @@ import { client } from "./graphql/client";
 import Search from "./screens/Search";
 import Blogs from "./screens/Blogs";
 import { Provider, useSelector, useDispatch } from "react-redux";
-import { store } from "./redux/store";
+import { store, persistor } from "./redux/store";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { selectCurrentUser } from "./redux/auth/auth.selector";
 import NewPost from "./screens/NewPost";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { PersistGate } from "redux-persist/integration/react";
 import { checkUserAuth, logoutStart } from "./redux/auth/auth.actions";
 import Dashboard from "./screens/Dashboard";
 import { useHistory } from "react-router-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Editor from "./components/Editor";
 
 const AppWrapper = () => {
   return (
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   );
 };
@@ -63,7 +67,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <NativeRouter>
-        <SafeAreaView style={styles.container}>
+        <SafeAreaProvider style={styles.container}>
           <View style={styles.container}>
             <View style={styles.nav}>
               <Link to='/'>
@@ -214,6 +218,13 @@ const App = () => {
                   }}>
                   {/* <Route exact path='/' component={Home} /> */}
                   <Route exact path='/' component={NewPost} />
+                  {/* <Route path='editor' component={Editor} />
+                  <Route
+                    path='/'
+                    render={() =>
+                      !currUser ? <NewPost /> : <Redirect to='/editor' />
+                    }
+                  /> */}
                   <Route path='/about' component={About} />
                   <Route path='/register' component={Register} />
                   <Route path='/login' component={Login} />
@@ -223,7 +234,11 @@ const App = () => {
                     path='/new-post'
                     exact
                     render={() =>
-                      currUser ? <NewPost /> : <Redirect to='/login' />
+                      currUser ? (
+                        <NewPost editMode={false} />
+                      ) : (
+                        <Redirect to='/login' />
+                      )
                     }
                   />
                   <Route
@@ -237,7 +252,7 @@ const App = () => {
               </TouchableWithoutFeedback>
             </Switch>
           </View>
-        </SafeAreaView>
+        </SafeAreaProvider>
       </NativeRouter>
     </ApolloProvider>
   );

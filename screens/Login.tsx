@@ -26,7 +26,7 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.signContainerOuter}>
+    <View style={styles.signContainer}>
       <Text style={styles.signTitle}>邮箱账号登录</Text>
       <View style={styles.inputContainer}>
         <Text>Email</Text>
@@ -60,7 +60,7 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  signContainerOuter: {
+  signContainer: {
     height: "80%",
     width: "80%",
     display: "flex",
@@ -68,14 +68,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingTop: 80,
     paddingBottom: 20,
-    borderWidth: 0,
-    borderRadius: 20,
-  },
-  signContainerInner: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    paddingBottom: 35,
     borderWidth: 0,
     borderRadius: 20,
   },

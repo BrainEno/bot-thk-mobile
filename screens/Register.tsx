@@ -40,7 +40,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
     onChangeVariable({ ...variables, email: "", password: "", username: "" });
   };
   return (
-    <View style={styles.signContainerOuter}>
+    <View style={styles.signContainer}>
       <Text style={styles.signTitle}>新账号注册</Text>
       <View style={styles.inputContainer}>
         <Text>用户名</Text>
@@ -86,7 +86,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
 export default Register;
 
 const styles = StyleSheet.create({
-  signContainerOuter: {
+  signContainer: {
     height: "90%",
     width: "80%",
     display: "flex",
@@ -95,14 +95,6 @@ const styles = StyleSheet.create({
     paddingTop: "8%",
     paddingBottom: "8%",
     borderWidth: 0,
-  },
-  signContainerInner: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    paddingBottom: 30,
-    borderWidth: 0,
-    borderRadius: 20,
   },
   signTitle: {
     fontSize: 30,

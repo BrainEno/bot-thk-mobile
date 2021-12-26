@@ -4,7 +4,7 @@ import { MutationLoginArgs } from "../types";
 import { uri } from "../client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const graphQLClient = new GraphQLClient(uri);
+export const graphQLClient = new GraphQLClient(uri);
 
 export const loginMutation = gql`
   mutation login($email: String!, $password: String!) {

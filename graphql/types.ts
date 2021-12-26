@@ -1,6 +1,7 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { gql } from '@apollo/client';
 export type Maybe<T> = T extends PromiseLike<infer U> ? Promise<U | null> : T | null;
+export type InputMaybe<T> = T extends PromiseLike<infer U> ? Promise<U | null> : T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -26,7 +27,7 @@ export type Blog = {
   commentCount: Maybe<Scalars['Float']>;
   desc: Scalars['String'];
   identifier: Scalars['String'];
-  imageUrn: Scalars['String'];
+  imageUrn: Maybe<Scalars['String']>;
   isPublished: Maybe<Scalars['Boolean']>;
   likesCount: Maybe<Scalars['Float']>;
   slug: Scalars['String'];
@@ -42,8 +43,8 @@ export type Category = {
   bannerUrn: Maybe<Scalars['String']>;
   blogs: Array<Blog>;
   desc: Maybe<Scalars['String']>;
+  identifier: Scalars['String'];
   name: Scalars['String'];
-  owner: Scalars['String'];
 };
 
 export type Comment = {
@@ -113,6 +114,7 @@ export type MutationCreateBlogArgs = {
 
 
 export type MutationCreateCategoryArgs = {
+  bannerUrn: Scalars['String'];
   desc: Scalars['String'];
   name: Scalars['String'];
 };
@@ -158,19 +160,19 @@ export type MutationPubBlogArgs = {
 
 export type MutationPubSubMutationArgs = {
   id: Scalars['Float'];
-  message: Maybe<Scalars['String']>;
+  message: InputMaybe<Scalars['String']>;
 };
 
 
 export type MutationPublishMutationArgs = {
   id: Scalars['Float'];
-  message: Maybe<Scalars['String']>;
+  message: InputMaybe<Scalars['String']>;
 };
 
 
 export type MutationPubsubMutationToDynamicTopicArgs = {
   id: Scalars['Float'];
-  message: Maybe<Scalars['String']>;
+  message: InputMaybe<Scalars['String']>;
   topic: Scalars['String'];
 };
 
@@ -209,6 +211,7 @@ export type MutationUpdateBlogArgs = {
 
 export type MutationUpdateCategoryArgs = {
   desc: Scalars['String'];
+  newBanner: Scalars['String'];
   newName: Scalars['String'];
   oldName: Scalars['String'];
 };
@@ -238,7 +241,6 @@ export type Query = {
   currentDate: Scalars['DateTime'];
   getCategoryByName: Category;
   getMessages: Array<Message>;
-  getOWnCategories: Array<Category>;
   getOwnBlogs: Array<Blog>;
   getTagByName: Tag;
   hello: Scalars['String'];
@@ -271,13 +273,13 @@ export type Reply = {
   username: Scalars['String'];
 };
 
-/** user roles */
+/** User Roles */
 export const enum Roles {
-  /** Admin users */
+  /** Admin User */
   Admin = 'ADMIN',
-  /** Authenticated users */
+  /** Authenticated User */
   AuthUser = 'AUTH_USER',
-  /** Unauthenticated users */
+  /** Unauthenticated User */
   Passager = 'PASSAGER'
 };
 
@@ -344,7 +346,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -445,7 +447,7 @@ export type BlogResolvers<ContextType = any, ParentType extends ResolversParentT
   commentCount: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   desc: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   identifier: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  imageUrn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrn: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   isPublished: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   likesCount: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   slug: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -461,8 +463,8 @@ export type CategoryResolvers<ContextType = any, ParentType extends ResolversPar
   bannerUrn: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   blogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType>;
   desc: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  identifier: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  owner: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -504,7 +506,7 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationCreateBlogArgs, 'body' | 'imageUrn' | 'isPublished' | 'title'>>;
-  createCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'desc' | 'name'>>;
+  createCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'bannerUrn' | 'desc' | 'name'>>;
   createTag: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name'>>;
   deleteBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationDeleteBlogArgs, 'id'>>;
   deleteTag: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<MutationDeleteTagArgs, 'name'>>;
@@ -521,7 +523,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   revokeRefreshTokensForUser: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokensForUserArgs, 'userId'>>;
   sendMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationSendMessageArgs, 'content' | 'to'>>;
   updateBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationUpdateBlogArgs, 'identifier' | 'newBody' | 'newDesc' | 'newImage' | 'newTitle'>>;
-  updateCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'desc' | 'newName' | 'oldName'>>;
+  updateCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'desc' | 'newBanner' | 'newName' | 'oldName'>>;
   uploadBlogPic: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUploadBlogPicArgs, 'filename' | 'identifier'>>;
   uploadCatBanner: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUploadCatBannerArgs, 'catName' | 'file'>>;
 };
@@ -538,7 +540,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   currentDate: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   getCategoryByName: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryGetCategoryByNameArgs, 'name'>>;
   getMessages: Resolver<Array<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<QueryGetMessagesArgs, 'from'>>;
-  getOWnCategories: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
   getOwnBlogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType>;
   getTagByName: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<QueryGetTagByNameArgs, 'name'>>;
   hello: Resolver<ResolversTypes['String'], ParentType, ContextType>;

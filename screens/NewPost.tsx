@@ -14,12 +14,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import { Alert, AlertType } from "../components/Alert";
+import { createBlog } from "../graphql/gql/blog";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const NewPost = () => {
+const NewPost = ({ editMode }: { editMode: boolean }) => {
   const history = useHistory();
   const [title, onChangeTitle] = useState("");
   const [content, onChangeContent] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [error, setError] = useState("");
 
   //从图片库选择图片
@@ -28,18 +30,19 @@ const NewPost = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      //图片比例
+      aspect: [16, 9],
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       const { uri } = result as ImageInfo;
       const name = title ? title : uri.slice(uri.lastIndexOf("/") + 1);
       const mime = uri.slice(uri.lastIndexOf(".") + 1);
       const source = { uri, type: `image/${mime}`, name };
-      console.log(source);
+      // console.log(source);
       cloudinaryUpload(source);
     }
   };
@@ -50,6 +53,7 @@ const NewPost = () => {
     data.append("file", photo);
     data.append("upload_preset", process.env.CLOUDINARY_PRESET);
     data.append("cloud_name", process.env.CLOUDINARY_NAME);
+
     fetch(process.env.CLOUDINARY_URI, {
       method: "post",
       body: data,
@@ -59,8 +63,59 @@ const NewPost = () => {
       .catch((err) => setError(err.toString()));
   };
 
-  const publish = () => {
+  //保存草稿
+  const save = async () => {
+    try {
+      await createBlog({
+        imageUrn: image,
+        isPublished: false,
+        body: content,
+        title,
+      });
+
+      await AsyncStorage.setItem("title", title);
+      await AsyncStorage.setItem("content", content);
+      await AsyncStorage.setItem("image", image);
+
+      alert("草稿已成功保存！");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  //发布文章
+  const publish = async () => {
     console.log(content);
+    try {
+      await createBlog({
+        imageUrn: image,
+        isPublished: true,
+        body: content,
+        title,
+      });
+
+      await AsyncStorage.setItem("title", title);
+      await AsyncStorage.setItem("content", content);
+      await AsyncStorage.setItem("image", image);
+
+      alert("文章已成功发布！");
+      history.push("/");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  //如果为编辑模式，获取缓存数据
+  const getCachedData = async () => {
+    if (editMode) {
+      const cachedTitle = await AsyncStorage.getItem("title");
+      const cachedContent = await AsyncStorage.getItem("content");
+      const cachedImage = await AsyncStorage.getItem("image");
+      if (cachedTitle) onChangeTitle(cachedTitle);
+      if (cachedContent) onChangeContent(cachedContent);
+      if (cachedImage) setImage(cachedImage);
+    }
+    return;
   };
 
   useEffect(() => {
@@ -73,6 +128,10 @@ const NewPost = () => {
         }
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    getCachedData();
   }, []);
 
   return (
@@ -96,6 +155,9 @@ const NewPost = () => {
               color='black'
               onPress={pickImage}
             />
+            <TouchableOpacity onPress={save}>
+              <Text style={styles.submit}>保存</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={publish}>
               <Text style={styles.submit}>发布</Text>
             </TouchableOpacity>
