@@ -13,40 +13,32 @@ import {
   Switch,
   Redirect,
 } from "react-router-native";
-// import Home from "./screens/Home";
-import About from "./screens/About";
-import Register from "./screens/Register";
-import Login from "./screens/Login";
-import { Avatar } from "./components/Avatar";
+import Home from "./src/screens/Home";
+import About from "./src/screens/About";
+import Register from "./src/screens/Register";
+import Login from "./src/screens/Login";
+import { Avatar } from "./src/components/Avatar";
 import { Entypo } from "@expo/vector-icons";
-import { MyIcon } from "./components/MyIcon";
+import { MyIcon } from "./src/components/MyIcon";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { ApolloProvider } from "@apollo/client";
-import { client } from "./graphql/client";
-import Search from "./screens/Search";
-import Blogs from "./screens/Blogs";
+import Search from "./src/screens/Search";
 import { Provider, useSelector, useDispatch } from "react-redux";
-import { store, persistor } from "./redux/store";
+import { store } from "./src/redux/store";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { selectCurrentUser } from "./redux/auth/auth.selector";
-import NewPost from "./screens/NewPost";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { selectCurrentUser } from "./src/redux/auth/auth.selector";
+import NewPost from "./src/screens/NewPost";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { PersistGate } from "redux-persist/integration/react";
-import { checkUserAuth, logoutStart } from "./redux/auth/auth.actions";
-import Dashboard from "./screens/Dashboard";
-import { useHistory } from "react-router-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import Editor from "./components/Editor";
+import { checkUserAuth, logoutStart } from "./src/redux/auth/auth.actions";
+import Dashboard from "./src/screens/Dashboard";
+import Post from "./src/screens/Post";
 
 const AppWrapper = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
+      <App />
     </Provider>
   );
 };
@@ -65,203 +57,199 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <ApolloProvider client={client}>
-      <NativeRouter>
-        <SafeAreaProvider style={styles.container}>
-          <View style={styles.container}>
-            <View style={styles.nav}>
-              <Link to='/'>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontWeight: "600",
-                      marginRight: 10,
-                      fontSize: 18,
-                    }}>
-                    BOT THK
-                  </Text>
-                  <MyIcon size={50} light />
-                </View>
-              </Link>
+    <NativeRouter>
+      <SafeAreaProvider style={styles.container}>
+        <View style={styles.container}>
+          <View style={styles.nav}>
+            <Link to='/'>
               <View
                 style={{
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "space-between",
                 }}>
-                <Link to='/search'>
-                  <FontAwesome5
-                    name='search'
-                    size={15}
-                    color='white'
-                    style={{ marginRight: 15 }}
-                  />
-                </Link>
-                <Entypo
-                  name='menu'
-                  size={24}
-                  color='white'
-                  onPress={() => setMenuActive(!menuActive)}
-                />
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "600",
+                    marginRight: 10,
+                    fontSize: 18,
+                  }}>
+                  BOT THK
+                </Text>
+                <MyIcon size={50} light />
               </View>
+            </Link>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
+              <Link to='/search'>
+                <FontAwesome5
+                  name='search'
+                  size={15}
+                  color='white'
+                  style={{ marginRight: 15 }}
+                />
+              </Link>
+              <Entypo
+                name='menu'
+                size={24}
+                color='white'
+                onPress={() => setMenuActive(!menuActive)}
+              />
             </View>
-            <View style={menuActive ? styles.menu : { display: "none" }}>
-              {currUser ? (
-                <View style={styles.infoWrp}>
-                  <View>
-                    <Link to='/dashboard'>
-                      <Avatar
-                        style={styles.avatar}
-                        source={{
-                          uri: currUser?.avatar
-                            ? currUser.avatar
-                            : "https://res.cloudinary.com/hapmoniym/image/upload/v1608712074/icons/avatar_w5us1g.png",
-                        }}
-                      />
-                    </Link>
-                    <View style={styles.badge} />
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={styles.infoText}>{currUser.username}</Text>
-                    <MaterialCommunityIcons
-                      style={{ marginTop: 2 }}
-                      name='open-in-new'
-                      size={18}
-                      color='#fff'
+          </View>
+          <View style={menuActive ? styles.menu : { display: "none" }}>
+            {currUser ? (
+              <View style={styles.infoWrp}>
+                <View>
+                  <Link to='/dashboard'>
+                    <Avatar
+                      style={styles.avatar}
+                      source={{
+                        uri: currUser.avatar
+                          ? currUser.avatar
+                          : "https://res.cloudinary.com/hapmoniym/image/upload/v1608712074/icons/avatar_w5us1g.png",
+                      }}
                     />
-                  </View>
-                  <View style={styles.follow}>
-                    <Text style={styles.followNum}>2</Text>
-                    <Text style={styles.followLabel}>正在关注 · </Text>
-                    <Text style={styles.followNum}>0</Text>
-                    <Text style={styles.followLabel}>关注者</Text>
-                  </View>
+                  </Link>
+                  <View style={styles.badge} />
                 </View>
-              ) : null}
-              <Link to='/'>
-                <View style={styles.navItem}>
-                  <SimpleLineIcons name='home' size={17} color='#fff' />
-                  <Text style={styles.navLink}>首页</Text>
-                </View>
-              </Link>
-              <Link to='/collection'>
-                <View style={styles.navItem}>
-                  <Feather name='bookmark' size={18} color='#fff' />
-                  <Text style={styles.navLink}>收藏</Text>
-                </View>
-              </Link>
-              <Link to='/collection'>
-                <View style={styles.navItem}>
-                  <Feather name='users' size={18} color='#fff' />
-                  <Text style={styles.navLink}>关注</Text>
-                </View>
-              </Link>
-              <Link to='/collection'>
-                <View style={styles.navItem}>
-                  <MaterialIcons
-                    name='chat-bubble-outline'
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={styles.infoText}>{currUser.username}</Text>
+                  <MaterialCommunityIcons
+                    style={{ marginTop: 2 }}
+                    name='open-in-new'
                     size={18}
                     color='#fff'
                   />
-                  <Text style={styles.navLink}>聊天</Text>
                 </View>
-              </Link>
-              <Link to='/about'>
-                <View style={styles.navItem}>
-                  <Feather name='info' size={18} color='#fff' />
-                  <Text style={styles.navLink}>关于</Text>
+                <View style={styles.follow}>
+                  <Text style={styles.followNum}>2</Text>
+                  <Text style={styles.followLabel}>正在关注 · </Text>
+                  <Text style={styles.followNum}>0</Text>
+                  <Text style={styles.followLabel}>关注者</Text>
                 </View>
+              </View>
+            ) : null}
+            <Link to='/'>
+              <View style={styles.navItem}>
+                <SimpleLineIcons name='home' size={17} color='#fff' />
+                <Text style={styles.navLink}>首页</Text>
+              </View>
+            </Link>
+            <Link to='/collection'>
+              <View style={styles.navItem}>
+                <Feather name='bookmark' size={18} color='#fff' />
+                <Text style={styles.navLink}>收藏</Text>
+              </View>
+            </Link>
+            <Link to='/collection'>
+              <View style={styles.navItem}>
+                <Feather name='users' size={18} color='#fff' />
+                <Text style={styles.navLink}>关注</Text>
+              </View>
+            </Link>
+            <Link to='/collection'>
+              <View style={styles.navItem}>
+                <MaterialIcons
+                  name='chat-bubble-outline'
+                  size={18}
+                  color='#fff'
+                />
+                <Text style={styles.navLink}>聊天</Text>
+              </View>
+            </Link>
+            <Link to='/new-post'>
+              <View style={styles.navItem}>
+                <Entypo name='new-message' size={18} color='#fff' />
+                <Text style={styles.navLink}>新建</Text>
+              </View>
+            </Link>
+            <Link to='/about'>
+              <View style={styles.navItem}>
+                <Feather name='info' size={18} color='#fff' />
+                <Text style={styles.navLink}>关于</Text>
+              </View>
+            </Link>
+            {currUser ? (
+              <Link to='/login'>
+                <TouchableWithoutFeedback onPress={handleLogout}>
+                  <View style={styles.navItem}>
+                    <Feather name='log-out' size={18} color='#fff' />
+                    <Text style={styles.navLink}>退出</Text>
+                  </View>
+                </TouchableWithoutFeedback>
               </Link>
-              {currUser ? (
+            ) : (
+              <View>
                 <Link to='/login'>
-                  <TouchableWithoutFeedback onPress={handleLogout}>
-                    <View style={styles.navItem}>
-                      <Feather name='log-out' size={18} color='#fff' />
-                      <Text style={styles.navLink}>退出</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
+                  <View style={styles.navItem}>
+                    <Entypo name='login' size={18} color='#fff' />
+                    <Text style={styles.navLink}>登录</Text>
+                  </View>
                 </Link>
-              ) : (
-                <View>
-                  <Link to='/login'>
-                    <View style={styles.navItem}>
-                      <Entypo name='login' size={18} color='#fff' />
-                      <Text style={styles.navLink}>登录</Text>
-                    </View>
-                  </Link>
-                  <Link to='/register'>
-                    <View style={styles.navItem}>
-                      <Feather name='user' size={18} color='#fff' />
-                      <Text style={styles.navLink}>注册</Text>
-                    </View>
-                  </Link>
-                </View>
-              )}
-            </View>
-
-            <Switch>
-              <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
-                <View
-                  style={{
-                    width: "100%",
-                    height: "92%",
-                    position: "absolute",
-                    bottom: 0,
-                    alignItems: "center",
-                  }}>
-                  {/* <Route exact path='/' component={Home} /> */}
-                  <Route exact path='/' component={NewPost} />
-                  {/* <Route path='editor' component={Editor} />
-                  <Route
-                    path='/'
-                    render={() =>
-                      !currUser ? <NewPost /> : <Redirect to='/editor' />
-                    }
-                  /> */}
-                  <Route path='/about' component={About} />
-                  <Route path='/register' component={Register} />
-                  <Route path='/login' component={Login} />
-                  <Route path='/search' component={Search} />
-                  <Route path='/blogs/:id' component={Blogs} />
-                  <Route
-                    path='/new-post'
-                    exact
-                    render={() =>
-                      currUser ? (
-                        <NewPost editMode={false} />
-                      ) : (
-                        <Redirect to='/login' />
-                      )
-                    }
-                  />
-                  <Route
-                    path='/dashboard'
-                    exact
-                    render={() =>
-                      currUser ? <Dashboard /> : <Redirect to='/login' />
-                    }
-                  />
-                </View>
-              </TouchableWithoutFeedback>
-            </Switch>
+                <Link to='/register'>
+                  <View style={styles.navItem}>
+                    <Feather name='user' size={18} color='#fff' />
+                    <Text style={styles.navLink}>注册</Text>
+                  </View>
+                </Link>
+              </View>
+            )}
           </View>
-        </SafeAreaProvider>
-      </NativeRouter>
-    </ApolloProvider>
+
+          <Switch>
+            <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
+              <View
+                style={{
+                  width: "100%",
+                  height: "92%",
+                  position: "absolute",
+                  bottom: 0,
+                  alignItems: "center",
+                }}>
+                <Route exact path='/' component={Home} />
+                <Route path='/about' component={About} />
+                <Route path='/register' component={Register} />
+                <Route path='/login' component={Login} />
+                <Route path='/search' component={Search} />
+                <Route path='/blogs/:slug' component={Post} />
+                <Route
+                  path='/new-post'
+                  exact
+                  render={() =>
+                    currUser ? (
+                      <NewPost mode='create' />
+                    ) : (
+                      <Redirect to='/login' />
+                    )
+                  }
+                />
+                <Route
+                  path='/dashboard'
+                  exact
+                  render={() =>
+                    currUser ? <Dashboard /> : <Redirect to='/login' />
+                  }
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          </Switch>
+        </View>
+      </SafeAreaProvider>
+    </NativeRouter>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.select({
-      android: Platform.Version <= 20 ? 0 : null,
+      android: Platform.Version <= 20 ? 0 : undefined,
     }),
     flex: 1,
     backgroundColor: "#f5f5f5",
