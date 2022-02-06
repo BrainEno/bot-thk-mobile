@@ -31,16 +31,14 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
     <TouchableWithoutFeedback
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={onPress}
-    >
+      onPress={onPress}>
       <View style={styles.buttonOuter}>
         <View style={styles.buttonInner}>
           <LinearGradient
             colors={gradColors}
             style={styles.buttonFace}
             start={{ x: 0, y: 1 }}
-            end={{ x: 1, y: 0 }}
-          >
+            end={{ x: 1, y: 0 }}>
             {children}
           </LinearGradient>
         </View>
@@ -54,8 +52,6 @@ const styles = StyleSheet.create({
     width: 220,
     height: 40,
     padding: 0,
-    // shadowOffset: { width: 3, height: 3 },
-    // shadowInset: { width: -3, height: -3 },
     shadowColor: "#292d32",
     shadowOpacity: 1,
     shadowRadius: 7,

@@ -9,6 +9,6 @@ export const getCatWithBlogs = async (
   const data = await graphQLClient.request(getCatWithBlogsQuery, {
     variables: identifier,
   });
-  console.log("DATA FROM REQUEST:", data);
+
   return data.getCatWithBlogs;
 };

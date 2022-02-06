@@ -11,6 +11,7 @@ export const getCatWithBlogsQuery = gql`
         identifier
         createdAt
         updatedAt
+        author
         slug
         title
         desc

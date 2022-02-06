@@ -10,13 +10,13 @@ import { MutationCreateBlogArgs } from "../graphql/types";
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 export const createBlog = async (variables: MutationCreateBlogArgs) => {
   const data = await graphQLClient.request(createBlogMutation, variables);
-  console.log(data);
+
   return data;
 };
 
 export const pubBlog = async (variables: MutationCreateBlogArgs) => {
   const data = await graphQLClient.request(pubBlogMutation, variables);
-  console.log(data);
+
   return data;
 };
 

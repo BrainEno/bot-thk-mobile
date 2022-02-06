@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { match } from "react-router-native";
 import { Article } from "../components/Article";
+import AuthorBlock from "../components/AuthorBlock";
+import { Recommend } from "../components/Recommend";
 import { Blog } from "../graphql/types";
 import { getBlogBySlug } from "../requests/blog";
+import { PostBtnGroup } from "../components/PostBtnGroup";
 
 interface PostProps {
   blog: Blog;
@@ -29,14 +32,25 @@ const Post: React.FC<PostProps> = ({ match }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getBlog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(blog);
   return (
-    <View>
+    <View style={styles.post}>
       {loading ? <ActivityIndicator /> : blog && <Article blog={blog} />}
+      {blog ? <AuthorBlock author={blog.author} /> : null}
+      <Recommend />
+      <PostBtnGroup />
     </View>
   );
 };
 
 export default Post;
+
+const styles = StyleSheet.create({
+  post: {
+    width: "100%",
+    position: "relative",
+    height: "100%",
+  },
+});

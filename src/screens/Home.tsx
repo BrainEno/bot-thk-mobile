@@ -15,9 +15,7 @@ const Home = () => {
     <View style={styles.home}>
       <CatList />
       <View>
-        {currUser ? (
-          <Alert message='登录成功!' type={AlertType.SUCCESS} />
-        ) : (
+        {currUser ? null : (
           <Alert message='登录账号后可发布文章' type={AlertType.INFO} />
         )}
       </View>
