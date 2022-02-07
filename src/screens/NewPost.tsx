@@ -18,7 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
 import { Alert, AlertType } from "../components/Alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createBlog } from "../requests/blog";
+import { createBlog, delCloudImg } from "../requests/blog";
 
 interface NewPostProps {
   mode: "create" | "edit";
@@ -60,8 +60,6 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
         { text: "取消", onPress: () => alert("已取消上传") },
         { text: "确认", onPress: () => cloudinaryUpload(source) },
       ]);
-
-      //cloudinaryUpload(source);
     }
   };
 
@@ -80,6 +78,16 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
       .then((res) => res.json())
       .then((data) => setImage(data.secure_url as string))
       .catch((err) => setError(err.toString() as string));
+  };
+
+  //删除图片
+  const deleteImage = () => {
+    delCloudImg(image)
+      .then(() => setImage(""))
+      .catch((err: any) => {
+        console.log(err);
+        setError(err.toString() as string);
+      });
   };
 
   //保存草稿
@@ -105,7 +113,7 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
 
   //发布文章
   const publish = async () => {
-    console.log(content);
+    if (!image || image === "") RNAlert.alert("提示", "请先上传图片");
     try {
       await createBlog({
         imageUrn: image,
@@ -179,9 +187,17 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
         </View>
         <>
           {image && image !== "" ? (
-            <View style={styles.imgWrp}>
-              <AntDesign name='delete' size={12} color='black' />
-              <Image source={{ uri: image }} style={styles.img} />
+            <View style={styles.imgCon}>
+              <View style={styles.imgWrp}>
+                <AntDesign
+                  name='delete'
+                  size={14}
+                  color='#c92c2c'
+                  style={styles.delBtn}
+                  onPress={deleteImage}
+                />
+                <Image source={{ uri: image }} style={styles.img} />
+              </View>
             </View>
           ) : null}
         </>
@@ -248,9 +264,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     textAlignVertical: "top",
   },
+  imgCon: {
+    width: "100%",
+    height: 140,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   imgWrp: {
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
+    width: 240,
+    height: 135,
   },
   delBtn: {
     position: "absolute",

@@ -27,34 +27,33 @@ export const Alert: React.FC<AlertProps> = ({
         return (
           <AntDesign
             style={styles.alertIcon}
-            name="checkcircle"
+            name='checkcircle'
             size={14}
-            color="#5CB660"
+            color='#5CB660'
           />
         );
       case AlertType.ERROR:
         return (
           <AntDesign
             style={styles.alertIcon}
-            name="closecircleo"
+            name='closecircleo'
             size={14}
-            color="#F06360"
+            color='#F06360'
           />
         );
       case AlertType.INFO:
         return (
           <AntDesign
             style={styles.alertIcon}
-            name="infocirlceo"
+            name='infocirlceo'
             size={14}
-            color="#1AB1F5"
+            color='#1AB1F5'
           />
         );
     }
   };
 
   return (
-<<<<<<< HEAD:src/components/Alert.tsx
     <>
       {visiable ? (
         <View
@@ -74,24 +73,6 @@ export const Alert: React.FC<AlertProps> = ({
         </View>
       ) : null}
     </>
-=======
-    <View
-      style={{
-        ...styles.alert,
-        backgroundColor:
-          type === "SUCCESS"
-            ? "#EDF7ED"
-            : type === "INFO"
-              ? "#E5F6FD"
-              : "#FFF4E5",
-      }}
-    >
-      <Text style={styles.alertMsg}>
-        {renderIcon(type)}
-        {"  " + message}
-      </Text>
-    </View>
->>>>>>> d09fd7f619cb57e1c2e6541a39dbb602c66ec397:components/Alert.tsx
   );
 };
 

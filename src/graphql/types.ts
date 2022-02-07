@@ -51,7 +51,7 @@ export type Blog = {
   slug: Scalars["String"];
   tags: Array<Tag>;
   title: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Maybe<Scalars["DateTime"]>;
   userLike: Scalars["Float"];
   userVote: Scalars["Float"];
   voteScore: Maybe<Scalars["Float"]>;
@@ -111,6 +111,7 @@ export type Mutation = {
   createCategory: Category;
   createTag: Tag;
   deleteBlog: Blog;
+  deleteCloudinaryImage: Scalars["Boolean"];
   deleteTag: Tag;
   editComment: Comment;
   login: LoginResponse;
@@ -149,6 +150,10 @@ export type MutationCreateTagArgs = {
 
 export type MutationDeleteBlogArgs = {
   id: Scalars["Float"];
+};
+
+export type MutationDeleteCloudinaryImageArgs = {
+  cloudinaryUrl: Scalars["String"];
 };
 
 export type MutationDeleteTagArgs = {
@@ -245,6 +250,7 @@ export type Query = {
   __typename?: "Query";
   currUser: Maybe<User>;
   currentDate: Scalars["DateTime"];
+  getBlogBySlug: Blog;
   getCatWithBlogs: Category;
   getCategoryByName: Category;
   getMessages: Array<Message>;
@@ -255,6 +261,10 @@ export type Query = {
   listAllCategories: Array<Category>;
   listAllTags: Array<Tag>;
   users: Array<User>;
+};
+
+export type QueryGetBlogBySlugArgs = {
+  slug: Scalars["String"];
 };
 
 export type QueryGetCatWithBlogsArgs = {
@@ -516,7 +526,11 @@ export type BlogResolvers<
   slug: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   tags: Resolver<Array<ResolversTypes["Tag"]>, ParentType, ContextType>;
   title: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  updatedAt: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  updatedAt: Resolver<
+    Maybe<ResolversTypes["DateTime"]>,
+    ParentType,
+    ContextType
+  >;
   userLike: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   userVote: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   voteScore: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
@@ -625,6 +639,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeleteBlogArgs, "id">
+  >;
+  deleteCloudinaryImage: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCloudinaryImageArgs, "cloudinaryUrl">
   >;
   deleteTag: Resolver<
     ResolversTypes["Tag"],
@@ -747,6 +767,12 @@ export type QueryResolvers<
 > = {
   currUser: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
   currentDate: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  getBlogBySlug: Resolver<
+    ResolversTypes["Blog"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetBlogBySlugArgs, "slug">
+  >;
   getCatWithBlogs: Resolver<
     ResolversTypes["Category"],
     ParentType,

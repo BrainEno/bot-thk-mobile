@@ -57,3 +57,9 @@ export const getBlogBySlugQuery = gql`
     }
   }
 `;
+
+export const delCloudImgMutation = gql`
+  mutation DeleteCloudinaryImage($cloudinaryUrl: String!) {
+    deleteCloudinaryImage(cloudinaryUrl: $cloudinaryUrl)
+  }
+`;
