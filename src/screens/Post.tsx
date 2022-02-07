@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { match } from "react-router-native";
 import { Article } from "../components/Article";
@@ -7,6 +8,13 @@ import { Recommend } from "../components/Recommend";
 import { Blog } from "../graphql/types";
 import { getBlogBySlug } from "../requests/blog";
 import { PostBtnGroup } from "../components/PostBtnGroup";
+=======
+import { View, ActivityIndicator } from "react-native";
+import { match } from "react-router-native";
+import { Article } from "../components/Article";
+import { Blog } from "../graphql/types";
+import { getBlogBySlug } from "../requests/blog";
+>>>>>>> d09fd7f619cb57e1c2e6541a39dbb602c66ec397
 
 interface PostProps {
   blog: Blog;
@@ -32,6 +40,7 @@ const Post: React.FC<PostProps> = ({ match }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getBlog();
+<<<<<<< HEAD
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -41,11 +50,20 @@ const Post: React.FC<PostProps> = ({ match }) => {
       {blog ? <AuthorBlock author={blog.author} /> : null}
       <Recommend />
       <PostBtnGroup />
+=======
+  }, []);
+
+  console.log(blog);
+  return (
+    <View>
+      {loading ? <ActivityIndicator /> : blog && <Article blog={blog} />}
+>>>>>>> d09fd7f619cb57e1c2e6541a39dbb602c66ec397
     </View>
   );
 };
 
 export default Post;
+<<<<<<< HEAD
 
 const styles = StyleSheet.create({
   post: {
@@ -54,3 +72,5 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
+=======
+>>>>>>> d09fd7f619cb57e1c2e6541a39dbb602c66ec397

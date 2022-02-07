@@ -11,7 +11,10 @@ export const getCatWithBlogsQuery = gql`
         identifier
         createdAt
         updatedAt
+<<<<<<< HEAD
         author
+=======
+>>>>>>> d09fd7f619cb57e1c2e6541a39dbb602c66ec397
         slug
         title
         desc
