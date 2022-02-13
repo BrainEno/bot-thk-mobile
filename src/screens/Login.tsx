@@ -5,11 +5,12 @@ import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart } from "../redux/auth/auth.actions";
 import { selectAuthError } from "../redux/auth/auth.selector";
+import { MutationLoginArgs } from "../graphql/types";
 
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [variables, setVariables] = useState({
+  const [variables, setVariables] = useState<MutationLoginArgs>({
     email: "",
     password: "",
   });

@@ -31,6 +31,10 @@ export const registerRequest = async (
   variables: MutationRegisterArgs
 ): Promise<boolean> => {
   const data = await graphQLClient.request(registerMutation, variables);
+  if (data.errors) {
+    return data.errors[0].message;
+  }
+
   return data;
 };
 
@@ -48,19 +52,3 @@ export const logoutRequest = async (): Promise<boolean> => {
 
   return data.logout;
 };
-
-// export const storeCookie = async (value: string) => {
-//   await AsyncStorage.setItem("bot", value);
-// };
-
-// export const getCookie = async (): Promise<string> => {
-//   const cookie = await AsyncStorage.getItem("bot");
-//   if (cookie) {
-//     return cookie;
-//   }
-//   return "";
-// };
-
-// export const removeCookie = async () => {
-//   await AsyncStorage.removeItem("bot");
-// };

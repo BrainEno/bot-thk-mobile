@@ -3,25 +3,26 @@
 import { Dispatch } from "redux";
 import { Category } from "../../graphql/types";
 import { getCatWithBlogs } from "../../requests/cats";
+import { withMatcher } from "../auth/auth.types";
 import {
   FETCH_ALL_REQUEST,
   FETCH_ALL_SUCCESS,
   FETCH_ALL_FAILURE,
 } from "./cats.types";
 
-export const fetchAllCatRequest = () => ({
+export const fetchAllCatRequest = withMatcher(() => ({
   type: FETCH_ALL_REQUEST,
-});
+}));
 
-export const fetchAllCatSuccess = (cat: Category) => ({
+export const fetchAllCatSuccess = withMatcher((cat: Category) => ({
   type: FETCH_ALL_SUCCESS,
   payload: cat,
-});
+}));
 
-export const fetchAllCatFailure = (error: string) => ({
+export const fetchAllCatFailure = withMatcher((error: string) => ({
   type: FETCH_ALL_FAILURE,
   payload: error,
-});
+}));
 
 export const fetchAllCatAsync = () => {
   return async (dispatch: Dispatch) => {

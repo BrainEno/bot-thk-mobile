@@ -34,6 +34,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { checkUserAuth, logoutStart } from "./src/redux/auth/auth.actions";
 import Dashboard from "./src/screens/Dashboard";
 import Post from "./src/screens/Post";
+import {
+  selectFollowerNum,
+  selectFollowingNum,
+} from "./src/redux/follow/follow.selector";
+import {
+  fetchFollowingAsync,
+  fetchFollowerAsync,
+} from "./src/redux/follow/follow.actions";
 
 const AppWrapper = () => {
   return (
@@ -46,6 +54,9 @@ const AppWrapper = () => {
 const App = () => {
   const [menuActive, setMenuActive] = useState(false);
   const currUser = useSelector(selectCurrentUser);
+  const followingNum = useSelector(selectFollowingNum);
+  const followerNum = useSelector(selectFollowerNum);
+
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -55,6 +66,11 @@ const App = () => {
   useEffect(() => {
     dispatch(checkUserAuth());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchFollowingAsync());
+    dispatch(fetchFollowerAsync());
+  }, [followerNum, followingNum, dispatch]);
 
   return (
     <NativeRouter>
@@ -121,6 +137,7 @@ const App = () => {
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text style={styles.infoText}>{currUser.username}</Text>
+                  <Text>{}</Text>
                   <MaterialCommunityIcons
                     style={{ marginTop: 2 }}
                     name='open-in-new'
@@ -129,9 +146,13 @@ const App = () => {
                   />
                 </View>
                 <View style={styles.follow}>
-                  <Text style={styles.followNum}>2</Text>
+                  <Text style={styles.followNum}>
+                    {currUser ? followingNum : 0}
+                  </Text>
                   <Text style={styles.followLabel}>正在关注 · </Text>
-                  <Text style={styles.followNum}>0</Text>
+                  <Text style={styles.followNum}>
+                    {currUser ? followerNum : 0}
+                  </Text>
                   <Text style={styles.followLabel}>关注者</Text>
                 </View>
               </View>

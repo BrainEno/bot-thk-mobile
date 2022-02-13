@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Link, useHistory } from "react-router-native";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import { registerRequest } from "../requests/auth";
 import { MutationRegisterArgs } from "../graphql/types";
 
 interface RegisterProps {}
 const Register: React.FC<RegisterProps> = () => {
   const [success, setSuccess] = useState(false);
-
-  const [variables, onChangeVariable] = useState<MutationRegisterArgs>({
+  const [error, setError] = useState("");
+  const history = useHistory();
+  const [variables, setVariable] = useState<MutationRegisterArgs>({
     username: "",
     email: "",
     password: "",
   });
 
   const { username, email, password } = variables;
-
-  const history = useHistory();
 
   const submitRegister = async () => {
     try {
@@ -26,15 +25,13 @@ const Register: React.FC<RegisterProps> = () => {
       if (success) history.push("/");
     } catch (err: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (err.graphQLErrors[0]) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        console.log(err.graphQLErrors[0]);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       console.log(err.message);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (err.message) setError(err.message as string);
+      if (error) Alert.alert(error);
     }
 
-    onChangeVariable({ ...variables, email: "", password: "", username: "" });
+    setVariable({ ...variables, email: "", password: "", username: "" });
   };
 
   return (
@@ -45,9 +42,7 @@ const Register: React.FC<RegisterProps> = () => {
         <TextInput
           style={styles.input}
           value={username}
-          onChangeText={(username) =>
-            onChangeVariable({ ...variables, username })
-          }
+          onChangeText={(username) => setVariable({ ...variables, username })}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -55,7 +50,7 @@ const Register: React.FC<RegisterProps> = () => {
         <TextInput
           style={styles.input}
           value={email}
-          onChangeText={(email) => onChangeVariable({ ...variables, email })}
+          onChangeText={(email) => setVariable({ ...variables, email })}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -64,9 +59,7 @@ const Register: React.FC<RegisterProps> = () => {
           style={styles.input}
           secureTextEntry={true}
           value={password}
-          onChangeText={(password) =>
-            onChangeVariable({ ...variables, password })
-          }
+          onChangeText={(password) => setVariable({ ...variables, password })}
         />
       </View>
       <View style={{ marginTop: 25 }}>

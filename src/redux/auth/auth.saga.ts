@@ -11,12 +11,16 @@ import {
 import { getCurrUser, loginRequest, logoutRequest } from "../../requests/auth";
 import { MutationLoginArgs } from "../../graphql/types";
 import { sendRefreshToken } from "../../requests/auth";
+import { setToken } from "../../utils/storage";
+
+export type RefreshTokenReturnType = { ok: boolean; accessToken: string };
 
 export function* checkUserAuthenticate() {
   try {
-    const { ok, accessToken }: { ok: boolean; accessToken: string } =
+    const { ok, accessToken }: RefreshTokenReturnType =
       yield sendRefreshToken();
     if (!ok) return;
+    yield setToken(accessToken);
     const { username, userRole, avatar } = yield getCurrUser(accessToken);
     yield put(loginSuccess({ username, userRole, avatar }));
   } catch (error: any) {
@@ -27,7 +31,7 @@ export function* checkUserAuthenticate() {
 export function* loginWithEmail({ payload }: { payload: MutationLoginArgs }) {
   try {
     const accessToken: string = yield loginRequest(payload);
-
+    yield setToken(accessToken);
     const { username, userRole, avatar } = yield getCurrUser(accessToken);
     yield put(loginSuccess({ username, userRole, avatar }));
   } catch (error: any) {
