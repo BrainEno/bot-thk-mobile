@@ -6,7 +6,12 @@ import {
   getBlogBySlugQuery,
   delCloudImgMutation,
 } from "../graphql/gql/blog";
-import { MutationCreateBlogArgs } from "../graphql/types";
+import {
+  Blog,
+  MutationCreateBlogArgs,
+  QueryRelatedBlogsArgs,
+} from "../graphql/types";
+import { relatedBlogsQuery } from "../graphql/gql/blog";
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 export const createBlog = async (variables: MutationCreateBlogArgs) => {
@@ -21,8 +26,10 @@ export const pubBlog = async (variables: MutationCreateBlogArgs) => {
 
 export const getBlogBySlug = async (slug: string) => {
   try {
-    const data = await graphQLClient.request(getBlogBySlugQuery, { slug });
-    return data.getBlogBySlug;
+    const data = await graphQLClient.request(getBlogBySlugQuery, {
+      slug,
+    });
+    if (data.getBlogBySlug) return data.getBlogBySlug;
   } catch (error: any) {
     const err = error.message;
     if (err) return err;
@@ -35,4 +42,11 @@ export const delCloudImg = async (imageUrn: string): Promise<boolean> => {
   });
   console.log(data);
   return data.deleteCloudinaryImage;
+};
+
+export const getRelatedBlogs = async (
+  variables: QueryRelatedBlogsArgs
+): Promise<Blog[]> => {
+  const data = await graphQLClient.request(relatedBlogsQuery, variables);
+  return data.relatedBlogs;
 };

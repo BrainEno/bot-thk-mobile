@@ -15,7 +15,7 @@ import { StyleProp } from "react-native";
 import { Link } from "react-router-native";
 import dayjs from "dayjs";
 
-interface BlogListProps {
+interface BlogPostProps {
   blog: Blog;
   onPress: (event: GestureResponderEvent) => void;
   textColor?: ColorValue;
@@ -31,7 +31,7 @@ const MemoText = React.memo(
   }) => <Text style={style}>{text}</Text>
 );
 
-export const BlogList: React.FC<BlogListProps> = ({ blog, onPress }) => {
+export const BlogPost: React.FC<BlogPostProps> = ({ blog, onPress }) => {
   const { slug, title, author, createdAt, imageUrn } = blog;
 
   return (

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FlatList, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { Blog } from "../graphql/types";
-import { BlogList } from "./BlogList";
+import { BlogPost } from "./BlogPost";
 import { fetchAllCatAsync } from "../redux/cats/cats.action";
 import { selectAllCatSelector } from "../redux/cats/cats.selector";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +21,7 @@ export const CatList = () => {
   };
 
   const renderItem = ({ item }: { item: Blog }) => {
-    return <BlogList blog={item} onPress={handleSelected(item.slug)} />;
+    return <BlogPost blog={item} onPress={handleSelected(item.slug)} />;
   };
 
   return (

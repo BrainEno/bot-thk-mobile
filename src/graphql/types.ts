@@ -35,6 +35,7 @@ export type Blog = {
   isPublished: Maybe<Scalars['Boolean']>;
   likesCount: Maybe<Scalars['Float']>;
   slug: Scalars['String'];
+  tagNames: Scalars['String'];
   tags: Array<Tag>;
   title: Scalars['String'];
   updatedAt: Maybe<Scalars['DateTime']>;
@@ -93,6 +94,7 @@ export type Message = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addTagToBlog: Blog;
   createBlog: Blog;
   createCategory: Category;
   createTag: Tag;
@@ -116,6 +118,12 @@ export type Mutation = {
   updateCategory: Category;
   uploadBlogPic: Scalars['String'];
   uploadCatBanner: Scalars['String'];
+};
+
+
+export type MutationAddTagToBlogArgs = {
+  blogIdentifier: Scalars['String'];
+  tagName: Scalars['String'];
 };
 
 
@@ -511,6 +519,7 @@ export type BlogResolvers<ContextType = any, ParentType extends ResolversParentT
   isPublished: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   likesCount: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   slug: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tagNames: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
@@ -573,6 +582,7 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addTagToBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationAddTagToBlogArgs, 'blogIdentifier' | 'tagName'>>;
   createBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationCreateBlogArgs, 'body' | 'imageUrn' | 'isPublished' | 'title'>>;
   createCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'bannerUrn' | 'desc' | 'name'>>;
   createTag: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name'>>;

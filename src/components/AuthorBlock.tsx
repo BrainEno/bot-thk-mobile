@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   avatarCon: {
     flexDirection: "row",
-    marginTop: 10,
+    marginTop: 15,
   },
   avatarWrp: {
     width: 40,

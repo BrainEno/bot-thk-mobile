@@ -58,8 +58,39 @@ export const getBlogBySlugQuery = gql`
   }
 `;
 
+//删除图片
 export const delCloudImgMutation = gql`
   mutation DeleteCloudinaryImage($cloudinaryUrl: String!) {
     deleteCloudinaryImage(cloudinaryUrl: $cloudinaryUrl)
+  }
+`;
+
+//列出相关文章
+export const relatedBlogsQuery = gql`
+  query RelatedBlogs($identifier: String!, $author: String!) {
+    relatedBlogs(identifier: $identifier, author: $author) {
+      identifier
+      createdAt
+      slug
+      title
+      desc
+      imageUrn
+      author
+    }
+  }
+`;
+
+//搜索文章
+export const searchBlogsQuery = gql`
+  query SearchBlog($keyword: String!) {
+    searchBlog(keyword: $keyword) {
+      title
+      desc
+      author
+      identifier
+      createdAt
+      slug
+      imageUrn
+    }
   }
 `;

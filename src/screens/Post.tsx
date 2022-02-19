@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
-import { match } from "react-router-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  FlatList,
+} from "react-native";
+import { match, useHistory } from "react-router-native";
 import { Article } from "../components/Article";
 import AuthorBlock from "../components/AuthorBlock";
-import { Recommend } from "../components/Recommend";
 import { Blog } from "../graphql/types";
-import { getBlogBySlug } from "../requests/blog";
+import { getBlogBySlug, getRelatedBlogs } from "../requests/blog";
 import { PostBtnGroup } from "../components/PostBtnGroup";
+import { BlogPost } from "../components/BlogPost";
 
 interface PostProps {
   blog: Blog;
@@ -16,30 +22,64 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({ match }) => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
+  const [related, setRelated] = useState<Blog[]>([]);
+  const history = useHistory();
 
-  const getBlog = async () => {
+  const getBlogAndRelated = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    try {
-      const data = await getBlogBySlug(match.params.slug);
-      setBlog(data as Blog);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+    getBlogBySlug(match.params.slug)
+      .then((b: Blog) => {
+        setBlog(b);
+        const rbs = getRelatedBlogs({
+          identifier: b.identifier,
+          author: b.author,
+        });
+        return rbs;
+      })
+      .then((rbs) => {
+        setRelated(rbs);
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, [match.params.slug]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getBlog();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    getBlogAndRelated();
+  }, [getBlogAndRelated]);
 
   return (
     <View style={styles.post}>
-      {loading ? <ActivityIndicator /> : blog && <Article blog={blog} />}
-      {blog ? <AuthorBlock author={blog.author} /> : null}
-      <Recommend />
+      <FlatList
+        ListHeaderComponent={
+          <View>
+            <View>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                blog && <Article blog={blog} />
+              )}
+              {blog ? <AuthorBlock author={blog.author} /> : null}
+            </View>
+            <View style={styles.textWrp}>
+              <Text style={styles.text}>相关推荐</Text>
+            </View>
+          </View>
+        }
+        data={related}
+        keyExtractor={(item) => item.identifier}
+        renderItem={({ item }) => (
+          <View style={styles.related}>
+            <BlogPost
+              blog={item}
+              onPress={() => history.push(`/blogs/${item.slug}`)}
+            />
+          </View>
+        )}
+      />
       <PostBtnGroup />
     </View>
   );
@@ -52,5 +92,24 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "relative",
     height: "100%",
+    paddingBottom: 40,
+  },
+  related: {
+    flexDirection: "row",
+    backgroundColor: "#eef0f4",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  textWrp: {
+    backgroundColor: "#eef0f4",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+  },
+  text: {
+    fontSize: 15,
+    letterSpacing: 1,
+    fontWeight: "700",
   },
 });

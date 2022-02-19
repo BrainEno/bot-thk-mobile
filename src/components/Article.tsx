@@ -11,34 +11,38 @@ export const Article: React.FC<ArticleProps> = ({ blog }) => {
   const { title, body, imageUrn, createdAt } = blog;
   return (
     <View style={styles.article}>
-      <View style={styles.titleWrp}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      <View style={styles.imgWrp}>
-        {imageUrn ? (
-          <Image source={{ uri: `${imageUrn}` }} style={styles.img} />
-        ) : (
-          <ActivityIndicator />
-        )}
-      </View>
-      <View>
-        <Text style={styles.time}>
-          {dayjs(createdAt as Date, "zh", true).format("MMMM,DD,YYYY") + "  "}
-          发布
-        </Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.text}>{body}</Text>
+      <View style={styles.container}>
+        <View style={styles.titleWrp}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles.imgWrp}>
+          {imageUrn ? (
+            <Image source={{ uri: `${imageUrn}` }} style={styles.img} />
+          ) : (
+            <ActivityIndicator />
+          )}
+        </View>
+        <View>
+          <Text style={styles.time}>
+            {dayjs(createdAt as Date, "zh", true).format("MMMM,DD,YYYY") + "  "}
+            发布
+          </Text>
+        </View>
+        <View style={styles.content}>
+          <Text style={styles.text}>{body}</Text>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  article: {
-    flexDirection: "column",
+  container: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  article: {
+    flexDirection: "column",
   },
   imgWrp: {
     alignItems: "center",
@@ -67,10 +71,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     marginVertical: 5,
     fontSize: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   content: {
     width: "90%",
     marginVertical: 24,
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     fontSize: 16,

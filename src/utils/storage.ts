@@ -13,6 +13,7 @@ export const setToken = async (token: string) => {
 export const getToken = async () => {
   try {
     const token = await AsyncStorage.getItem("token");
+    console.log("getToken from storage: ", token);
     if (!token) return null;
     return token;
   } catch (err) {

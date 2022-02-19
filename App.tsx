@@ -34,14 +34,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { checkUserAuth, logoutStart } from "./src/redux/auth/auth.actions";
 import Dashboard from "./src/screens/Dashboard";
 import Post from "./src/screens/Post";
+import { fetchFollowInfoAsync } from "./src/redux/follow/follow.actions";
 import {
   selectFollowerNum,
   selectFollowingNum,
 } from "./src/redux/follow/follow.selector";
-import {
-  fetchFollowingAsync,
-  fetchFollowerAsync,
-} from "./src/redux/follow/follow.actions";
 
 const AppWrapper = () => {
   return (
@@ -65,12 +62,11 @@ const App = () => {
 
   useEffect(() => {
     dispatch(checkUserAuth());
-  }, [dispatch]);
+  }, [currUser, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchFollowingAsync());
-    dispatch(fetchFollowerAsync());
-  }, [followerNum, followingNum, dispatch]);
+    currUser && dispatch(fetchFollowInfoAsync());
+  }, [currUser, followerNum, followingNum, dispatch]);
 
   return (
     <NativeRouter>
@@ -146,13 +142,9 @@ const App = () => {
                   />
                 </View>
                 <View style={styles.follow}>
-                  <Text style={styles.followNum}>
-                    {currUser ? followingNum : 0}
-                  </Text>
+                  <Text style={styles.followNum}>{followingNum}</Text>
                   <Text style={styles.followLabel}>正在关注 · </Text>
-                  <Text style={styles.followNum}>
-                    {currUser ? followerNum : 0}
-                  </Text>
+                  <Text style={styles.followNum}>{followerNum}</Text>
                   <Text style={styles.followLabel}>关注者</Text>
                 </View>
               </View>
