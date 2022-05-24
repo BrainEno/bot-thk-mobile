@@ -1,35 +1,39 @@
 {
-  "expo": {
-    "name": "rn-blog",
-    "slug": "rn-blog",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png",
-      "build": {
-        "babel": {
-          "include": ["react-router-native", "@react-native-community/cookies"]
-        }
+  "name": "rn-bot-thk",
+  "slug": "rn-bot-thk",
+  "version": "1.0.0",
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "splash": {
+    "image": "./assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "updates": {
+    "fallbackToCacheTimeout": 0
+  },
+  "assetBundlePatterns": ["**/*"],
+  "ios": {
+    "supportsTablet": true
+  },
+  "android": {
+    "versionCode": 1,
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#FFFFFF"
+    }
+  },
+  "web": {
+    "favicon": "./assets/favicon.png",
+    "build": {
+      "babel": {
+        "include": ["react-router-native", "@react-native-community/cookies"]
       }
     }
+  },
+  "plugins": ["expo-community-flipper"],
+  "packagerOpts": {
+    "sourceExts": ["ts", "tsx", "js", "jsx", "json", "cjs"],
+    "config": "metro.config.js"
   }
 }

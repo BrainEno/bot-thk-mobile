@@ -1,11 +1,11 @@
-import { DocumentNode } from "graphql";
+import type { DocumentNode } from 'graphql';
 
-declare module "*.gql" {
+declare module '*.gql' {
   const content: DocumentNode;
   export default content;
 }
 
-declare module "*.graphql" {
+declare module '*.graphql' {
   const content: DocumentNode;
   export default content;
 }

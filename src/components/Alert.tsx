@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { useTimeout } from "../hooks/useTimeout";
+ 
+/* eslint-disable no-nested-ternary */
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+
+import { useTimeout } from '../hooks/useTimeout';
 
 export enum AlertType {
-  ERROR = "ERROR",
-  INFO = "INFO",
-  SUCCESS = "SUCCESS",
+  ERROR = 'ERROR',
+  INFO = 'INFO',
+  SUCCESS = 'SUCCESS',
 }
 
 interface AlertProps {
@@ -60,15 +63,15 @@ export const Alert: React.FC<AlertProps> = ({
           style={{
             ...styles.alert,
             backgroundColor:
-              type === "SUCCESS"
-                ? "#EDF7ED"
-                : type === "INFO" // eslint-disable-next-line indent
-                ? "#E5F6FD" // eslint-disable-next-line indent
-                : "#FFF4E5",
+              type === 'SUCCESS'
+                ? '#EDF7ED'
+                : type === 'INFO' // eslint-disable-next-line indent
+                ? '#E5F6FD' // eslint-disable-next-line indent
+                : '#FFF4E5',
           }}>
           <Text style={styles.alertMsg}>
             {renderIcon(type)}
-            {"  " + message}
+            {'  ' + message}
           </Text>
         </View>
       ) : null}
@@ -78,18 +81,18 @@ export const Alert: React.FC<AlertProps> = ({
 
 const styles = StyleSheet.create({
   alert: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 10,
   },
   alertMsg: {
     paddingVertical: 4,
     paddingHorizontal: 8,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   alertIcon: {
     marginRight: 5,

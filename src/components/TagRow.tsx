@@ -1,8 +1,9 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Tag } from "./Tag";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-const data = ["tag1", "tag2", "tag3"];
+import { Tag } from './Tag';
+
+const data = ['tag1', 'tag2', 'tag3'];
 
 export const TagRow = () => {
   return (
@@ -16,9 +17,9 @@ export const TagRow = () => {
 
 const styles = StyleSheet.create({
   tagRow: {
-    justifyContent: "center",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignItems: "center",
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

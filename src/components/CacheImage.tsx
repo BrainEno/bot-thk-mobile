@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import React, { useEffect, useState } from "react";
-import {
-  Image,
+import React, { useEffect, useState } from 'react';
+import type {
   ImageSourcePropType,
   ImageStyle,
-  StyleProp,
-} from "react-native";
-import shorthash from "shorthash";
-import * as FileSystem from "expo-file-system";
+  StyleProp} from 'react-native';
+import {
+  Image
+} from 'react-native';
+import shorthash from 'shorthash';
+import * as FileSystem from 'expo-file-system';
 
 type CacheImageProps = {
   style: StyleProp<ImageStyle> | undefined;
@@ -26,14 +27,14 @@ const CacheImage: React.FC<CacheImageProps> = ({ style, uri }) => {
       const path = `${FileSystem.cacheDirectory}${name}`;
       const image = await FileSystem.getInfoAsync(path);
       if (image.exists) {
-        console.log("read image from cache");
+        console.log('read image from cache');
         setSource({
           uri: image.uri,
         });
         return;
       }
 
-      console.log("downloading image to cache");
+      console.log('downloading image to cache');
       const newImage = await FileSystem.downloadAsync(uri, path);
       setSource({
         uri: newImage.uri,

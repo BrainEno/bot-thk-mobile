@@ -1,37 +1,51 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Link, useHistory } from "react-router-native";
-import { TouchableOpacity, Alert } from "react-native";
-import { registerRequest } from "../requests/auth";
-import { MutationRegisterArgs } from "../graphql/types";
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import { Link, useNavigate } from 'react-router-native';
+
+import { registerRequest } from '../requests/auth';
+import type { MutationRegisterArgs } from '../graphql/types';
 
 interface RegisterProps {}
 const Register: React.FC<RegisterProps> = () => {
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
-  const history = useHistory();
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const [variables, setVariable] = useState<MutationRegisterArgs>({
-    username: "",
-    email: "",
-    password: "",
+    username: '',
+    email: '',
+    password: '',
   });
 
   const { username, email, password } = variables;
 
-  const submitRegister = async () => {
-    try {
-      const res = await registerRequest(variables);
-      setSuccess(res);
-      if (success) history.push("/");
-    } catch (err: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      console.log(err.message);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (err.message) setError(err.message as string);
-      if (error) Alert.alert(error);
-    }
-
-    setVariable({ ...variables, email: "", password: "", username: "" });
+  const submitRegister = () => {
+    registerRequest(variables)
+      .then((res) => {
+        setSuccess(res);
+        if (success) {
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        console.log(err.message);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (err.message) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          setError(err.message as string);
+        }
+        if (error) {
+          Alert.alert(error);
+        }
+      });
+    setVariable({ ...variables, email: '', password: '', username: '' });
   };
 
   return (
@@ -64,7 +78,7 @@ const Register: React.FC<RegisterProps> = () => {
       </View>
       <View style={{ marginTop: 25 }}>
         <TouchableOpacity style={styles.submitBtn} onPress={submitRegister}>
-          <Text style={{ color: "#fff", fontWeight: "600" }}>注 册</Text>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>注 册</Text>
         </TouchableOpacity>
       </View>
       <Link to='/login'>
@@ -78,13 +92,13 @@ export default Register;
 
 const styles = StyleSheet.create({
   signContainer: {
-    height: "90%",
-    width: "80%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    paddingTop: "8%",
-    paddingBottom: "8%",
+    height: '90%',
+    width: '80%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingTop: '8%',
+    paddingBottom: '8%',
     borderWidth: 0,
   },
   signTitle: {
@@ -93,8 +107,8 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   inputContainer: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginBottom: 15,
   },
   input: {
@@ -102,18 +116,18 @@ const styles = StyleSheet.create({
     width: 240,
     marginBottom: 15,
     marginTop: 15,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    borderEndColor: "#000",
+    borderEndColor: '#000',
     paddingHorizontal: 8,
   },
   submitBtn: {
     padding: 12,
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     width: 240,
     borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginVertical: 25,
   },
 });

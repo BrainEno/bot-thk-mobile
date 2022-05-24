@@ -1,6 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { SearchBar } from "../components/SearchBar";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+import { SearchBar } from '../components/SearchBar';
 
 interface SearchProps {}
 
@@ -17,12 +18,12 @@ export default Search;
 
 const styles = StyleSheet.create({
   SearchContainer: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#fff",
-    display: "flex",
-    flexDirection: "column-reverse",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fff',
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
+import type {
+  NativeSyntheticEvent,
+  NativeTouchEvent} from 'react-native';
 import {
   View,
   StyleSheet,
-  NativeSyntheticEvent,
-  NativeTouchEvent,
   TouchableWithoutFeedback,
-} from "react-native";
+} from 'react-native';
 
 interface NormalButtonProps {
   children: React.ReactNode;
@@ -27,11 +28,11 @@ const styles = StyleSheet.create({
   normalBtn: {
     width: 80,
     height: 30,
-    backgroundColor: "#0074CC",
+    backgroundColor: '#0074CC',
     paddingHorizontal: 15,
     paddingVertical: 4,
     borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -1,23 +1,25 @@
-import React, { useEffect } from "react";
-import { FlatList, View, Text, StyleSheet, SafeAreaView } from "react-native";
-import { Blog } from "../graphql/types";
-import { BlogPost } from "./BlogPost";
-import { fetchAllCatAsync } from "../redux/cats/cats.action";
-import { selectAllCatSelector } from "../redux/cats/cats.selector";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-native";
+import React, { useEffect } from 'react';
+import { FlatList, View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-native';
+
+import type { Blog } from '../graphql/types';
+import { fetchAllCatAsync } from '../redux/cats/cats.action';
+import { selectAllCatSelector } from '../redux/cats/cats.selector';
+
+import { BlogPost } from './BlogPost';
 
 export const CatList = () => {
   const allCat = useSelector(selectAllCatSelector);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchAllCatAsync());
+    dispatch(fetchAllCatAsync() as any);
   }, [dispatch]);
 
   const handleSelected = (slug: string) => () => {
-    history.push(`/blogs/${slug}`);
+    navigate(`/blogs/${slug}`);
   };
 
   const renderItem = ({ item }: { item: Blog }) => {
@@ -56,15 +58,15 @@ export const CatList = () => {
 
 const styles = StyleSheet.create({
   postList: {
-    width: "100%",
+    width: '100%',
   },
   catName: {
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: '500',
     letterSpacing: 0.5,
     paddingVertical: 10,
-    borderBottomColor: "#ebebeb",
+    borderBottomColor: '#ebebeb',
     borderBottomWidth: 1,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

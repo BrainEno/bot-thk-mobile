@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { graphQLClient } from "../graphql/client";
+import { graphQLClient } from '../graphql/client';
 import {
   currUserQuery,
   loginMutation,
   logoutMutation,
   registerMutation,
-} from "../graphql/gql/auth";
-import { MutationLoginArgs, MutationRegisterArgs } from "../graphql/types";
+} from '../graphql/gql/auth';
+import type { MutationLoginArgs, MutationRegisterArgs } from '../graphql/types';
 
 export const getCurrUser = async (token: string) => {
-  graphQLClient.setHeader("Authorization", `Bearer ${token}`);
+  graphQLClient.setHeader('Authorization', `Bearer ${token}`);
   const data = await graphQLClient.request(currUserQuery);
   if (data.errors) {
     return data.errors[0].message;

@@ -1,18 +1,25 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
-import { Link, useHistory } from "react-router-native";
-import { TouchableOpacity } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { loginStart } from "../redux/auth/auth.actions";
-import { selectAuthError } from "../redux/auth/auth.selector";
-import { MutationLoginArgs } from "../graphql/types";
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
+import { Link, useNavigate } from 'react-router-native';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { loginStart } from '../redux/auth/auth.actions';
+import { selectAuthError } from '../redux/auth/auth.selector';
+import type { MutationLoginArgs } from '../graphql/types';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [variables, setVariables] = useState<MutationLoginArgs>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const error = useSelector(selectAuthError);
@@ -21,9 +28,11 @@ const Login = () => {
 
   const submitLogin = () => {
     dispatch(loginStart(variables));
-    setVariables({ ...variables, email: "", password: "" });
-    if (error) Alert.alert(error);
-    history.push("/");
+    setVariables({ ...variables, email: '', password: '' });
+    if (error) {
+      Alert.alert(error);
+    }
+    navigate('/');
   };
 
   return (
@@ -48,7 +57,7 @@ const Login = () => {
       </View>
       <View style={{ marginTop: 25 }}>
         <TouchableOpacity style={styles.submitBtn} onPress={submitLogin}>
-          <Text style={{ color: "#fff", fontWeight: "600" }}>登 录</Text>
+          <Text style={{ color: '#fff', fontWeight: '600' }}>登 录</Text>
         </TouchableOpacity>
       </View>
       <Link to='/register'>
@@ -62,11 +71,11 @@ export default Login;
 
 const styles = StyleSheet.create({
   signContainer: {
-    height: "80%",
-    width: "80%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
+    height: '80%',
+    width: '80%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
     paddingTop: 80,
     paddingBottom: 20,
     borderWidth: 0,
@@ -78,8 +87,8 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   inputContainer: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginBottom: 15,
   },
   input: {
@@ -87,18 +96,18 @@ const styles = StyleSheet.create({
     width: 240,
     marginBottom: 15,
     marginTop: 15,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    borderEndColor: "#000",
+    borderEndColor: '#000',
     paddingHorizontal: 8,
   },
   submitBtn: {
     padding: 12,
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     width: 240,
     borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginVertical: 25,
   },
 });

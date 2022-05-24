@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { graphQLClient } from "../graphql/client";
+import { graphQLClient } from '../graphql/client';
 import {
   createBlogMutation,
   pubBlogMutation,
   getBlogBySlugQuery,
   delCloudImgMutation,
-} from "../graphql/gql/blog";
-import {
+  relatedBlogsQuery } from '../graphql/gql/blog';
+import type {
   Blog,
   MutationCreateBlogArgs,
   QueryRelatedBlogsArgs,
-} from "../graphql/types";
-import { relatedBlogsQuery } from "../graphql/gql/blog";
+} from '../graphql/types';
+
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 export const createBlog = async (variables: MutationCreateBlogArgs) => {
@@ -29,10 +29,10 @@ export const getBlogBySlug = async (slug: string) => {
     const data = await graphQLClient.request(getBlogBySlugQuery, {
       slug,
     });
-    if (data.getBlogBySlug) return data.getBlogBySlug;
+    if (data.getBlogBySlug) {return data.getBlogBySlug;}
   } catch (error: any) {
     const err = error.message;
-    if (err) return err;
+    if (err) {return err;}
   }
 };
 

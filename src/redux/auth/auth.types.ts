@@ -1,15 +1,15 @@
-import { AnyAction } from "redux";
+import type { AnyAction } from 'redux';
 
-export const LOGIN_START = "LOGIN_START";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILURE = "LOGIN_FAILURE";
-export const LOGOUT_START = "LOGOUT_START";
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
-export const CHECK_USER_AUTH = "CHECK_USER_AUTH";
+export const LOGIN_START = 'LOGIN_START';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT_START = 'LOGOUT_START';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+export const CHECK_USER_AUTH = 'CHECK_USER_AUTH';
 
 type Matchable<AC extends () => AnyAction> = AC & {
-  type: ReturnType<AC>["type"];
+  type: ReturnType<AC>['type'];
   match(action: AnyAction): action is ReturnType<AC>;
 };
 
@@ -21,7 +21,7 @@ export function withMatcher<
 >(actionCreator: AC): Matchable<AC>;
 export function withMatcher<AC extends (...args: any[]) => AnyAction>(
   actionCreator: AC,
-  type: ReturnType<AC>["type"]
+  type: ReturnType<AC>['type']
 ): Matchable<AC>;
 
 export function withMatcher(

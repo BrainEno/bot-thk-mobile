@@ -1,6 +1,8 @@
-import { RootState } from "../rootReducer";
-import { createSelector } from "reselect";
-import { FollowState } from ".";
+import { createSelector } from 'reselect';
+
+import type { RootState } from '../rootReducer';
+
+import type { FollowState } from '.';
 
 export const selectFollow = (state: RootState) => state.follow;
 

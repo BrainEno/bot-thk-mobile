@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { AnyAction } from "redux";
+import type { AnyAction } from 'redux';
+
 import {
   FETCH_FOLLOWINFO_REQUEST,
   FETCH_FOLLOWINFO_SUCCESS,
   FETCH_FOLLOWINFO_FAILURE,
-} from "./follow.types";
+} from './follow.types';
 
 export interface FollowState {
   followingIds: string[];

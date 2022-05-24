@@ -1,7 +1,8 @@
-import dayjs from "dayjs";
-import React from "react";
-import { View, Text, Image, ActivityIndicator, StyleSheet } from "react-native";
-import { Blog } from "../graphql/types";
+import dayjs from 'dayjs';
+import React from 'react';
+import { View, Text, Image, ActivityIndicator, StyleSheet } from 'react-native';
+
+import type { Blog } from '../graphql/types';
 
 interface ArticleProps {
   blog: Blog;
@@ -24,7 +25,7 @@ export const Article: React.FC<ArticleProps> = ({ blog }) => {
         </View>
         <View>
           <Text style={styles.time}>
-            {dayjs(createdAt as Date, "zh", true).format("MMMM,DD,YYYY") + "  "}
+            {dayjs(createdAt as Date, 'zh', true).format('MMMM,DD,YYYY') + '  '}
             发布
           </Text>
         </View>
@@ -38,47 +39,47 @@ export const Article: React.FC<ArticleProps> = ({ blog }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   article: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   imgWrp: {
-    alignItems: "center",
-    width: "100%",
+    alignItems: 'center',
+    width: '100%',
     marginVertical: 10,
   },
   img: {
     borderWidth: 1,
-    position: "relative",
-    width: "90%",
+    position: 'relative',
+    width: '90%',
     height: 180,
   },
   titleWrp: {
-    width: "90%",
-    alignItems: "center",
+    width: '90%',
+    alignItems: 'center',
     marginTop: 10,
   },
   title: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: '700',
     letterSpacing: 0.2,
-    color: "#000",
+    color: '#000',
   },
   time: {
-    color: "#444",
+    color: '#444',
     letterSpacing: 0.3,
     marginVertical: 5,
     fontSize: 12,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
-    width: "90%",
+    width: '90%',
     marginVertical: 24,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontSize: 16,

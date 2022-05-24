@@ -1,7 +1,8 @@
-import { combineReducers } from "redux";
-import auth from "./auth";
-import cats from "./cats";
-import follow from "./follow";
+import { combineReducers } from 'redux';
+
+import auth from './auth';
+import cats from './cats';
+import follow from './follow';
 
 const rootReducer = combineReducers({
   auth,

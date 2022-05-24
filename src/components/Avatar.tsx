@@ -1,12 +1,6 @@
-import React from "react";
-import {
-  View,
-  Image,
-  ImageSourcePropType,
-  StyleProp,
-  ImageStyle,
-  StyleSheet,
-} from "react-native";
+import React from 'react';
+import type { ImageSourcePropType, StyleProp, ImageStyle } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 
 interface AvatarProps {
   source: ImageSourcePropType;
@@ -15,7 +9,7 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = ({ source, style }) => {
   return (
-    <View>
+    <View style={styles.avatar}>
       <Image source={source} style={style} />
     </View>
   );
@@ -23,8 +17,8 @@ export const Avatar: React.FC<AvatarProps> = ({ source, style }) => {
 
 const styles = StyleSheet.create({
   avatar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -1,4 +1,5 @@
-import { UserInfo } from "./index";
+import type { MutationLoginArgs } from '../../graphql/types';
+
 import {
   CHECK_USER_AUTH,
   LOGIN_FAILURE,
@@ -7,9 +8,9 @@ import {
   LOGOUT_FAILURE,
   LOGOUT_START,
   LOGOUT_SUCCESS,
-} from "./auth.types";
-import { MutationLoginArgs } from "../../graphql/types";
-import { withMatcher } from "./auth.types";
+  withMatcher } from './auth.types';
+
+import type { UserInfo } from './index';
 
 export const checkUserAuth = withMatcher(() => ({
   type: CHECK_USER_AUTH,

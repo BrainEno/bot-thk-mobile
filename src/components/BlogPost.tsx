@@ -1,19 +1,16 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
+import React from 'react';
+import type {
   GestureResponderEvent,
   TextStyle,
   ColorValue,
-} from "react-native";
-import { Blog } from "../graphql/types";
-import { Feather } from "@expo/vector-icons";
-import { StyleProp } from "react-native";
-import { Link } from "react-router-native";
-import dayjs from "dayjs";
+  StyleProp,
+} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { Link } from 'react-router-native';
+import dayjs from 'dayjs';
+
+import type { Blog } from '../graphql/types';
 
 interface BlogPostProps {
   blog: Blog;
@@ -44,10 +41,10 @@ export const BlogPost: React.FC<BlogPostProps> = ({ blog, onPress }) => {
             <Text style={styles.author}>·</Text>
             <MemoText
               style={styles.time}
-              text={dayjs(createdAt as Date, "zh", true).format("MMMM,DD,YYYY")}
+              text={dayjs(createdAt as Date, 'zh', true).format('MMMM,DD,YYYY')}
             />
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <Feather
               style={{ marginTop: 8, marginLeft: 3 }}
               name='star'
@@ -79,49 +76,49 @@ export const BlogPost: React.FC<BlogPostProps> = ({ blog, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
-    width: "100%",
+    width: '100%',
     height: 80,
     marginTop: 8,
   },
   blog: {
     marginRight: 20,
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     paddingBottom: 10,
   },
   title: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     letterSpacing: 0.2,
     marginBottom: 8,
     marginLeft: 5,
-    color: "#000",
+    color: '#000',
   },
   msgContainer: {
-    flexDirection: "row",
-    width: "100%",
-    alignItems: "center",
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
   },
   author: {
     fontSize: 13,
-    fontWeight: "400",
-    color: "#141414",
+    fontWeight: '400',
+    color: '#141414',
     letterSpacing: 1,
     marginLeft: 5,
   },
   time: {
     fontSize: 13,
-    fontWeight: "400",
-    color: "#474747",
+    fontWeight: '400',
+    color: '#474747',
     letterSpacing: 1,
     marginLeft: 5,
     marginRight: 20,
   },
   image: {
     width: 80,
-    height: "100%",
+    height: '100%',
   },
 });

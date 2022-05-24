@@ -1,7 +1,7 @@
-import { gql } from "graphql-tag";
+import { gql } from 'graphql-tag';
 
 export const followMutation = gql`
-  mutation follow($userId: number) {
+  mutation follow($username: String!) {
     follow
   }
 `;

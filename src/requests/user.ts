@@ -4,27 +4,27 @@ import {
   followMutation,
   listFollowerQuery,
   listFollowingQuery,
-} from "../graphql/gql/user";
-import { graphQLClient } from "../graphql/client";
-import { getToken } from "../utils/storage";
+} from '../graphql/gql/user';
+import { graphQLClient } from '../graphql/client';
+import { getToken } from '../utils/storage';
 
-export const follow = async (userId: number): Promise<boolean> => {
+export const follow = async (username: string): Promise<boolean> => {
   const token = await getToken();
-  graphQLClient.setHeader("Authorization", `Bearer ${token || ""}`);
-  const data = await graphQLClient.request(followMutation, { userId });
+  graphQLClient.setHeader('Authorization', `Bearer ${token || ''}`);
+  const data = await graphQLClient.request(followMutation, { username });
   return data.follow;
 };
 
 export const listFollower = async (): Promise<string> => {
   const token = await getToken();
-  graphQLClient.setHeader("Authorization", `Bearer ${token || ""}`);
+  graphQLClient.setHeader('Authorization', `Bearer ${token || ''}`);
   const data = await graphQLClient.request(listFollowerQuery);
   return data.listFollower;
 };
 
 export const listFollowing = async (): Promise<string> => {
   const token = await getToken();
-  graphQLClient.setHeader("Authorization", `Bearer ${token || ""}`);
+  graphQLClient.setHeader('Authorization', `Bearer ${token || ''}`);
   const data = await graphQLClient.request(listFollowingQuery);
   return data.listFollowing;
 };

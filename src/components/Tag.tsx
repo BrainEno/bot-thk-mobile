@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import React from 'react';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface TagProps {
   tagText: string;
@@ -19,14 +19,14 @@ export const Tag: React.FC<TagProps> = ({ tagText, width, height }) => {
 
 const styles = StyleSheet.create({
   tagWrp: {
-    backgroundColor: "#e6e6e6",
-    color: "#5e5e5e",
+    backgroundColor: '#e6e6e6',
+    color: '#5e5e5e',
     borderRadius: 50,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginRight: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 8,
   },
 });

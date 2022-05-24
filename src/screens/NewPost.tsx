@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable no-catch-shadow */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,35 +12,35 @@ import {
   Platform,
   Image,
   Alert as RNAlert,
-} from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { useHistory } from "react-router-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import * as ImagePicker from "expo-image-picker";
-import { ImageInfo } from "expo-image-picker/build/ImagePicker.types";
-import { Alert, AlertType } from "../components/Alert";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createBlog, delCloudImg } from "../requests/blog";
+} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { useNavigate, useLinkPressHandler } from 'react-router-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { Alert, AlertType } from '../components/Alert';
+import { createBlog, delCloudImg } from '../requests/blog';
 
 interface NewPostProps {
-  mode: "create" | "edit";
+  mode: 'create' | 'edit';
 }
 
 const NewPost: React.FC<NewPostProps> = ({ mode }) => {
-  const history = useHistory();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [image, setImage] = useState("");
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState('');
+  const [error, setError] = useState('');
 
   //从图片库选择图片
   const pickImage = async () => {
-    if (Platform.OS !== "web") {
+    if (Platform.OS !== 'web') {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-      if (status !== "granted") {
-        alert("抱歉，请允许相机权限后重试");
+      if (status !== 'granted') {
+        RNAlert.alert('抱歉，请允许相机权限后重试');
       }
     }
 
@@ -51,14 +53,14 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
     });
 
     if (!result.cancelled) {
-      const { uri } = result as ImageInfo;
-      const name = title ? title : uri.slice(uri.lastIndexOf("/") + 1);
-      const mime = uri.slice(uri.lastIndexOf(".") + 1);
+      const { uri } = result;
+      const name = title ? title : uri.slice(uri.lastIndexOf('/') + 1);
+      const mime = uri.slice(uri.lastIndexOf('.') + 1);
       const source = { uri, type: `image/${mime}`, name };
       // console.log(source);
-      RNAlert.alert("上传图片", "确认上传选中的图片？", [
-        { text: "取消", onPress: () => alert("已取消上传") },
-        { text: "确认", onPress: () => cloudinaryUpload(source) },
+      RNAlert.alert('上传图片', '确认上传选中的图片？', [
+        { text: '取消', onPress: () => RNAlert.alert('已取消上传') },
+        { text: '确认', onPress: () => cloudinaryUpload(source) },
       ]);
     }
   };
@@ -67,12 +69,12 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
   const cloudinaryUpload = (photo: any) => {
     const data = new FormData();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    data.append("file", photo);
-    data.append("upload_preset", process.env.CLOUDINARY_PRESET!);
-    data.append("cloud_name", process.env.CLOUDINARY_NAME!);
+    data.append('file', photo);
+    data.append('upload_preset', process.env.CLOUDINARY_PRESET!);
+    data.append('cloud_name', process.env.CLOUDINARY_NAME!);
 
     fetch(process.env.CLOUDINARY_URI!, {
-      method: "post",
+      method: 'post',
       body: data,
     })
       .then((res) => res.json())
@@ -83,7 +85,7 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
   //删除图片
   const deleteImage = () => {
     delCloudImg(image)
-      .then(() => setImage(""))
+      .then(() => setImage(''))
       .catch((err: any) => {
         console.log(err);
         setError(err.toString() as string);
@@ -100,20 +102,21 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
         title,
       });
 
-      await AsyncStorage.setItem("title", title);
-      await AsyncStorage.setItem("content", content);
-      await AsyncStorage.setItem("image", image);
+      await AsyncStorage.setItem('title', title);
+      await AsyncStorage.setItem('content', content);
+      await AsyncStorage.setItem('image', image);
 
-      alert("草稿已成功保存！");
+      RNAlert.alert('草稿已成功保存！');
     } catch (error: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      alert(error.message);
+      RNAlert.alert(error.message as string);
     }
   };
 
   //发布文章
   const publish = async () => {
-    if (!image || image === "") RNAlert.alert("提示", "请先上传图片");
+    if (!image || image === '') {
+      RNAlert.alert('提示', '请先上传图片');
+    }
     try {
       await createBlog({
         imageUrn: image,
@@ -122,27 +125,29 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
         title,
       });
 
-      setTitle("");
-      setContent("");
-      setImage("");
+      setTitle('');
+      setContent('');
+      setImage('');
 
-      await AsyncStorage.setItem("title", title);
-      await AsyncStorage.setItem("content", content);
-      await AsyncStorage.setItem("image", image);
+      await AsyncStorage.setItem('title', title);
+      await AsyncStorage.setItem('content', content);
+      await AsyncStorage.setItem('image', image);
 
-      alert("文章已成功发布！");
-      // history.push("/");
+      RNAlert.alert('文章已成功发布！');
+      navigate('/');
     } catch (error: any) {
-      alert(error.message);
+      RNAlert.alert(error.message as string);
     }
   };
 
+  const handleClose = useLinkPressHandler('/');
+
   //如果为编辑模式，获取缓存数据
   const getCachedData = async () => {
-    if (mode === "edit") {
-      const cachedTitle = (await AsyncStorage.getItem("title")) ?? "";
-      const cachedContent = (await AsyncStorage.getItem("content")) ?? "";
-      const cachedImage = (await AsyncStorage.getItem("image")) ?? "";
+    if (mode === 'edit') {
+      const cachedTitle = (await AsyncStorage.getItem('title')) ?? '';
+      const cachedContent = (await AsyncStorage.getItem('content')) ?? '';
+      const cachedImage = (await AsyncStorage.getItem('image')) ?? '';
       setTitle(cachedTitle);
       setContent(cachedContent);
       setImage(cachedImage);
@@ -168,9 +173,9 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
             style={{
               marginHorizontal: 12,
             }}
-            onPress={() => history.push("/")}
+            onPress={handleClose}
           />
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <AntDesign
               name='picture'
               size={24}
@@ -186,7 +191,7 @@ const NewPost: React.FC<NewPostProps> = ({ mode }) => {
           </View>
         </View>
         <>
-          {image && image !== "" ? (
+          {image && image !== '' ? (
             <View style={styles.imgCon}>
               <View style={styles.imgWrp}>
                 <AntDesign
@@ -226,26 +231,26 @@ export default NewPost;
 
 const styles = StyleSheet.create({
   editor: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#EFF3F8",
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#EFF3F8',
   },
   btnGroup: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginVertical: 8,
   },
   submit: {
-    color: "#000",
-    fontWeight: "400",
+    color: '#000',
+    fontWeight: '400',
     fontSize: 16,
     marginVertical: 10,
     marginHorizontal: 15,
   },
   title: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginHorizontal: 30,
     marginVertical: 20,
     fontSize: 14,
@@ -254,38 +259,38 @@ const styles = StyleSheet.create({
     height: 40,
   },
   content: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginHorizontal: 30,
     marginVertical: 0,
     fontSize: 14,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    textAlignVertical: "top",
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    textAlignVertical: 'top',
   },
   imgCon: {
-    width: "100%",
+    width: '100%',
     height: 140,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imgWrp: {
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
     width: 240,
     height: 135,
   },
   delBtn: {
-    position: "absolute",
+    position: 'absolute',
     right: 10,
     top: 10,
     zIndex: 2,
   },
   img: {
     borderWidth: 1,
-    position: "relative",
+    position: 'relative',
     width: 240,
     height: 135,
   },

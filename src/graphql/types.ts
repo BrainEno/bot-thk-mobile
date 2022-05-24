@@ -1,13 +1,28 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { GraphQLClient } from 'graphql-request';
-import * as Dom from 'graphql-request/dist/types.dom';
-import gql from 'graphql-tag';
-export type Maybe<T> = T extends PromiseLike<infer U> ? Promise<U | null> : T | null;
-export type InputMaybe<T> = T extends PromiseLike<infer U> ? Promise<U | null> : T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
+import type {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
+// import type { GraphQLClient } from 'graphql-request';
+
+export type Maybe<T> = T extends PromiseLike<infer U>
+  ? Promise<U | null>
+  : T | null;
+export type InputMaybe<T> = T extends PromiseLike<infer U>
+  ? Promise<U | null>
+  : T | null;
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type RequireFields<T, K extends keyof T> = {
+  [X in Exclude<keyof T, K>]?: T[X];
+} & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -120,12 +135,10 @@ export type Mutation = {
   uploadCatBanner: Scalars['String'];
 };
 
-
 export type MutationAddTagToBlogArgs = {
   blogIdentifier: Scalars['String'];
   tagName: Scalars['String'];
 };
-
 
 export type MutationCreateBlogArgs = {
   body: Scalars['String'];
@@ -134,73 +147,60 @@ export type MutationCreateBlogArgs = {
   title: Scalars['String'];
 };
 
-
 export type MutationCreateCategoryArgs = {
   bannerUrn: Scalars['String'];
   desc: Scalars['String'];
   name: Scalars['String'];
 };
 
-
 export type MutationCreateTagArgs = {
   name: Scalars['String'];
 };
-
 
 export type MutationDeleteBlogArgs = {
   id: Scalars['Float'];
 };
 
-
 export type MutationDeleteCloudinaryImageArgs = {
   cloudinaryUrl: Scalars['String'];
 };
 
-
 export type MutationDeleteTagArgs = {
   name: Scalars['String'];
 };
-
 
 export type MutationEditCommentArgs = {
   identifier: Scalars['String'];
   newContent: Scalars['String'];
 };
 
-
 export type MutationFollowArgs = {
   userId: Scalars['Float'];
 };
-
 
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
 
-
 export type MutationNewCommentArgs = {
   blogIdentifier: Scalars['String'];
   content: Scalars['String'];
 };
 
-
 export type MutationPubBlogArgs = {
   identifier: Scalars['String'];
 };
-
 
 export type MutationPubSubMutationArgs = {
   id: Scalars['Float'];
   message: InputMaybe<Scalars['String']>;
 };
 
-
 export type MutationPublishMutationArgs = {
   id: Scalars['Float'];
   message: InputMaybe<Scalars['String']>;
 };
-
 
 export type MutationPubsubMutationToDynamicTopicArgs = {
   id: Scalars['Float'];
@@ -208,29 +208,24 @@ export type MutationPubsubMutationToDynamicTopicArgs = {
   topic: Scalars['String'];
 };
 
-
 export type MutationRegisterArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
 
-
 export type MutationRemoveCommentArgs = {
   identifier: Scalars['String'];
 };
-
 
 export type MutationRevokeRefreshTokensForUserArgs = {
   userId: Scalars['Float'];
 };
 
-
 export type MutationSendMessageArgs = {
   content: Scalars['String'];
   to: Scalars['String'];
 };
-
 
 export type MutationUpdateBlogArgs = {
   identifier: Scalars['String'];
@@ -240,7 +235,6 @@ export type MutationUpdateBlogArgs = {
   newTitle: Scalars['String'];
 };
 
-
 export type MutationUpdateCategoryArgs = {
   desc: Scalars['String'];
   newBanner: Scalars['String'];
@@ -248,12 +242,10 @@ export type MutationUpdateCategoryArgs = {
   oldName: Scalars['String'];
 };
 
-
 export type MutationUploadBlogPicArgs = {
   filename: Scalars['String'];
   identifier: Scalars['String'];
 };
-
 
 export type MutationUploadCatBannerArgs = {
   catName: Scalars['String'];
@@ -288,37 +280,30 @@ export type Query = {
   users: Array<User>;
 };
 
-
 export type QueryGetBlogBySlugArgs = {
   slug: Scalars['String'];
 };
-
 
 export type QueryGetCatWithBlogsArgs = {
   identifier: Scalars['String'];
 };
 
-
 export type QueryGetCategoryByNameArgs = {
   name: Scalars['String'];
 };
-
 
 export type QueryGetMessagesArgs = {
   from: Scalars['String'];
 };
 
-
 export type QueryGetTagByNameArgs = {
   name: Scalars['String'];
 };
-
 
 export type QueryRelatedBlogsArgs = {
   author: Scalars['String'];
   identifier: Scalars['String'];
 };
-
 
 export type QuerySearchBlogArgs = {
   keyword: Scalars['String'];
@@ -341,8 +326,8 @@ export const enum Roles {
   /** Authenticated User */
   AuthUser = 'AUTH_USER',
   /** Unauthenticated User */
-  Passager = 'PASSAGER'
-};
+  Passager = 'PASSAGER',
+}
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -350,7 +335,6 @@ export type Subscription = {
   getNotification: Notification;
   subscriptionWithFilterToDynamicTopic: Notification;
 };
-
 
 export type SubscriptionSubscriptionWithFilterToDynamicTopicArgs = {
   topic: Scalars['String'];
@@ -390,15 +374,14 @@ export type Vote = {
   value: Scalars['Float'];
 };
 
-
-
 export type ResolverTypeWrapper<T> = Promise<T> | T;
-
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -421,9 +404,25 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -431,12 +430,26 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
@@ -445,11 +458,20 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+export type DirectiveResolverFn<
+  TResult = {},
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
@@ -506,39 +528,68 @@ export type ResolversParentTypes = {
   Vote: Vote;
 };
 
-export type BlogResolvers<ContextType = any, ParentType extends ResolversParentTypes['Blog'] = ResolversParentTypes['Blog']> = {
+export type BlogResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Blog'] = ResolversParentTypes['Blog']
+> = {
   author: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   authorAvatar: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   body: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  categories: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
-  commentCount: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  categories: Resolver<
+    Array<ResolversTypes['Category']>,
+    ParentType,
+    ContextType
+  >;
+  commentCount: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   createdAt: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   desc: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   identifier: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrn: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isPublished: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  isPublished: Resolver<
+    Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >;
   likesCount: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   slug: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tagNames: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedAt: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   userLike: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   userVote: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   voteScore: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
+export type CategoryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']
+> = {
   bannerUrn: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  blogs: Resolver<Maybe<Array<ResolversTypes['Blog']>>, ParentType, ContextType>;
+  blogs: Resolver<
+    Maybe<Array<ResolversTypes['Blog']>>,
+    ParentType,
+    ContextType
+  >;
   desc: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   identifier: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
+export type CommentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']
+> = {
   blog: Resolver<ResolversTypes['Blog'], ParentType, ContextType>;
   content: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -549,11 +600,15 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
 
-export type LikeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']> = {
+export type LikeResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']
+> = {
   blog: Resolver<ResolversTypes['Blog'], ParentType, ContextType>;
   createdAt: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   isLiked: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -563,13 +618,19 @@ export type LikeResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LoginResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
+export type LoginResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']
+> = {
   accessToken: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
+export type MessageResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
+> = {
   content: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   from: Resolver<ResolversTypes['User'], ParentType, ContextType>;
@@ -581,61 +642,240 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addTagToBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationAddTagToBlogArgs, 'blogIdentifier' | 'tagName'>>;
-  createBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationCreateBlogArgs, 'body' | 'imageUrn' | 'isPublished' | 'title'>>;
-  createCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'bannerUrn' | 'desc' | 'name'>>;
-  createTag: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name'>>;
-  deleteBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationDeleteBlogArgs, 'id'>>;
-  deleteCloudinaryImage: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCloudinaryImageArgs, 'cloudinaryUrl'>>;
-  deleteTag: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<MutationDeleteTagArgs, 'name'>>;
-  editComment: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationEditCommentArgs, 'identifier' | 'newContent'>>;
-  follow: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationFollowArgs, 'userId'>>;
-  login: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  addTagToBlog: Resolver<
+    ResolversTypes['Blog'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddTagToBlogArgs, 'blogIdentifier' | 'tagName'>
+  >;
+  createBlog: Resolver<
+    ResolversTypes['Blog'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationCreateBlogArgs,
+      'body' | 'imageUrn' | 'isPublished' | 'title'
+    >
+  >;
+  createCategory: Resolver<
+    ResolversTypes['Category'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCategoryArgs, 'bannerUrn' | 'desc' | 'name'>
+  >;
+  createTag: Resolver<
+    ResolversTypes['Tag'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateTagArgs, 'name'>
+  >;
+  deleteBlog: Resolver<
+    ResolversTypes['Blog'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteBlogArgs, 'id'>
+  >;
+  deleteCloudinaryImage: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCloudinaryImageArgs, 'cloudinaryUrl'>
+  >;
+  deleteTag: Resolver<
+    ResolversTypes['Tag'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteTagArgs, 'name'>
+  >;
+  editComment: Resolver<
+    ResolversTypes['Comment'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationEditCommentArgs, 'identifier' | 'newContent'>
+  >;
+  follow: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationFollowArgs, 'userId'>
+  >;
+  login: Resolver<
+    ResolversTypes['LoginResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginArgs, 'email' | 'password'>
+  >;
   logout: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  newComment: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationNewCommentArgs, 'blogIdentifier' | 'content'>>;
-  pubBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationPubBlogArgs, 'identifier'>>;
-  pubSubMutation: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationPubSubMutationArgs, 'id'>>;
-  publishMutation: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationPublishMutationArgs, 'id'>>;
-  pubsubMutationToDynamicTopic: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationPubsubMutationToDynamicTopicArgs, 'id' | 'topic'>>;
-  register: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
-  removeComment: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationRemoveCommentArgs, 'identifier'>>;
-  revokeRefreshTokensForUser: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeRefreshTokensForUserArgs, 'userId'>>;
-  sendMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationSendMessageArgs, 'content' | 'to'>>;
-  updateBlog: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<MutationUpdateBlogArgs, 'identifier' | 'newBody' | 'newDesc' | 'newImage' | 'newTitle'>>;
-  updateCategory: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'desc' | 'newBanner' | 'newName' | 'oldName'>>;
-  uploadBlogPic: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUploadBlogPicArgs, 'filename' | 'identifier'>>;
-  uploadCatBanner: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUploadCatBannerArgs, 'catName' | 'file'>>;
+  newComment: Resolver<
+    ResolversTypes['Comment'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationNewCommentArgs, 'blogIdentifier' | 'content'>
+  >;
+  pubBlog: Resolver<
+    ResolversTypes['Blog'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationPubBlogArgs, 'identifier'>
+  >;
+  pubSubMutation: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationPubSubMutationArgs, 'id'>
+  >;
+  publishMutation: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationPublishMutationArgs, 'id'>
+  >;
+  pubsubMutationToDynamicTopic: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationPubsubMutationToDynamicTopicArgs, 'id' | 'topic'>
+  >;
+  register: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>
+  >;
+  removeComment: Resolver<
+    ResolversTypes['Comment'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveCommentArgs, 'identifier'>
+  >;
+  revokeRefreshTokensForUser: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRevokeRefreshTokensForUserArgs, 'userId'>
+  >;
+  sendMessage: Resolver<
+    ResolversTypes['Message'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSendMessageArgs, 'content' | 'to'>
+  >;
+  updateBlog: Resolver<
+    ResolversTypes['Blog'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationUpdateBlogArgs,
+      'identifier' | 'newBody' | 'newDesc' | 'newImage' | 'newTitle'
+    >
+  >;
+  updateCategory: Resolver<
+    ResolversTypes['Category'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationUpdateCategoryArgs,
+      'desc' | 'newBanner' | 'newName' | 'oldName'
+    >
+  >;
+  uploadBlogPic: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUploadBlogPicArgs, 'filename' | 'identifier'>
+  >;
+  uploadCatBanner: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUploadCatBannerArgs, 'catName' | 'file'>
+  >;
 };
 
-export type NotificationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Notification'] = ResolversParentTypes['Notification']> = {
+export type NotificationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Notification'] = ResolversParentTypes['Notification']
+> = {
   date: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   message: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = {
   currUser: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   currentDate: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  getBlogBySlug: Resolver<ResolversTypes['Blog'], ParentType, ContextType, RequireFields<QueryGetBlogBySlugArgs, 'slug'>>;
-  getCatWithBlogs: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryGetCatWithBlogsArgs, 'identifier'>>;
-  getCategoryByName: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryGetCategoryByNameArgs, 'name'>>;
-  getMessages: Resolver<Array<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<QueryGetMessagesArgs, 'from'>>;
+  getBlogBySlug: Resolver<
+    ResolversTypes['Blog'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetBlogBySlugArgs, 'slug'>
+  >;
+  getCatWithBlogs: Resolver<
+    ResolversTypes['Category'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetCatWithBlogsArgs, 'identifier'>
+  >;
+  getCategoryByName: Resolver<
+    ResolversTypes['Category'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetCategoryByNameArgs, 'name'>
+  >;
+  getMessages: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetMessagesArgs, 'from'>
+  >;
   getOwnBlogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType>;
-  getTagByName: Resolver<ResolversTypes['Tag'], ParentType, ContextType, RequireFields<QueryGetTagByNameArgs, 'name'>>;
+  getTagByName: Resolver<
+    ResolversTypes['Tag'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetTagByNameArgs, 'name'>
+  >;
   hello: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  listAllBlogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType>;
-  listAllCategories: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
+  listAllBlogs: Resolver<
+    Array<ResolversTypes['Blog']>,
+    ParentType,
+    ContextType
+  >;
+  listAllCategories: Resolver<
+    Array<ResolversTypes['Category']>,
+    ParentType,
+    ContextType
+  >;
   listAllTags: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   listFollower: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   listFollowing: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  relatedBlogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType, RequireFields<QueryRelatedBlogsArgs, 'author' | 'identifier'>>;
-  searchBlog: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType, RequireFields<QuerySearchBlogArgs, 'keyword'>>;
+  relatedBlogs: Resolver<
+    Array<ResolversTypes['Blog']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRelatedBlogsArgs, 'author' | 'identifier'>
+  >;
+  searchBlog: Resolver<
+    Array<ResolversTypes['Blog']>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySearchBlogArgs, 'keyword'>
+  >;
   users: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
-export type ReplyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Reply'] = ResolversParentTypes['Reply']> = {
+export type ReplyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Reply'] = ResolversParentTypes['Reply']
+> = {
   comments: Resolver<ResolversTypes['Comment'], ParentType, ContextType>;
   content: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -645,34 +885,76 @@ export type ReplyResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  getMessage: SubscriptionResolver<ResolversTypes['Message'], "getMessage", ParentType, ContextType>;
-  getNotification: SubscriptionResolver<ResolversTypes['Notification'], "getNotification", ParentType, ContextType>;
-  subscriptionWithFilterToDynamicTopic: SubscriptionResolver<ResolversTypes['Notification'], "subscriptionWithFilterToDynamicTopic", ParentType, ContextType, RequireFields<SubscriptionSubscriptionWithFilterToDynamicTopicArgs, 'topic'>>;
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+> = {
+  getMessage: SubscriptionResolver<
+    ResolversTypes['Message'],
+    'getMessage',
+    ParentType,
+    ContextType
+  >;
+  getNotification: SubscriptionResolver<
+    ResolversTypes['Notification'],
+    'getNotification',
+    ParentType,
+    ContextType
+  >;
+  subscriptionWithFilterToDynamicTopic: SubscriptionResolver<
+    ResolversTypes['Notification'],
+    'subscriptionWithFilterToDynamicTopic',
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionSubscriptionWithFilterToDynamicTopicArgs, 'topic'>
+  >;
 };
 
-export type TagResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
+export type TagResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']
+> = {
   blogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType>;
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+export interface UploadScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
   name: 'Upload';
 }
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = {
   avatar: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   blogs: Resolver<Array<ResolversTypes['Blog']>, ParentType, ContextType>;
   comments: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>;
   email: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  followerIds: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  followerIds: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   followers: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-  followingIds: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  followingIds: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   followings: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-  likedBlogIds: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  likedBlogNum: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  likedBlogIds: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  likedBlogNum: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   likes: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType>;
   replies: Resolver<Array<ResolversTypes['Reply']>, ParentType, ContextType>;
   userRole: Resolver<Maybe<ResolversTypes['Roles']>, ParentType, ContextType>;
@@ -681,7 +963,10 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
+export type VoteResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']
+> = {
   blog: Resolver<ResolversTypes['Blog'], ParentType, ContextType>;
   user: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   username: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -708,17 +993,19 @@ export type Resolvers<ContextType = any> = {
   Vote: VoteResolvers<ContextType>;
 };
 
+export type SdkFunctionWrapper = <T>(
+  action: (requestHeaders?: Record<string, string>) => Promise<T>,
+  operationName: string
+) => Promise<T>;
 
+// const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
-
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
-
-
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
-
-export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
-  return {
-
-  };
-}
-export type Sdk = ReturnType<typeof getSdk>;
+// export function getSdk(
+//   client: GraphQLClient,
+//   withWrapper: SdkFunctionWrapper = defaultWrapper
+// ) {
+//   return {
+//     withWrapper,
+//   };
+// }
+// export type Sdk = ReturnType<typeof getSdk>;

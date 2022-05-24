@@ -1,6 +1,8 @@
-import { createSelector } from "reselect";
-import { AuthState } from ".";
-import { RootState } from "../rootReducer";
+import { createSelector } from 'reselect';
+
+import type { RootState } from '../rootReducer';
+
+import type { AuthState } from '.';
 
 const selectUser = (state: RootState) => state.auth;
 

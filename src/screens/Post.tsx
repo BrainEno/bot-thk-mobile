@@ -1,51 +1,48 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
   ActivityIndicator,
   StyleSheet,
   FlatList,
-} from "react-native";
-import { match, useHistory } from "react-router-native";
-import { Article } from "../components/Article";
-import AuthorBlock from "../components/AuthorBlock";
-import { Blog } from "../graphql/types";
-import { getBlogBySlug, getRelatedBlogs } from "../requests/blog";
-import { PostBtnGroup } from "../components/PostBtnGroup";
-import { BlogPost } from "../components/BlogPost";
+} from 'react-native';
 
-interface PostProps {
-  blog: Blog;
-  match: match<{ slug: string }>;
-}
+import { Article } from '../components/Article';
+import AuthorBlock from '../components/AuthorBlock';
+import type { Blog } from '../graphql/types';
+import { getBlogBySlug, getRelatedBlogs } from '../requests/blog';
+import { PostBtnGroup } from '../components/PostBtnGroup';
+import { BlogPost } from '../components/BlogPost';
+import { useNavigate, useParams } from 'react-router-native';
 
-const Post: React.FC<PostProps> = ({ match }) => {
+const Post = () => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [related, setRelated] = useState<Blog[]>([]);
-  const history = useHistory();
+  const { slug } = useParams();
+  const navigate = useNavigate();
 
   const getBlogAndRelated = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-
-    getBlogBySlug(match.params.slug)
-      .then((b: Blog) => {
-        setBlog(b);
-        const rbs = getRelatedBlogs({
-          identifier: b.identifier,
-          author: b.author,
+    if (slug) {
+      getBlogBySlug(slug)
+        .then((b: Blog) => {
+          setBlog(b);
+          const rbs = getRelatedBlogs({
+            identifier: b.identifier,
+            author: b.author,
+          });
+          return rbs;
+        })
+        .then((rbs) => {
+          setRelated(rbs);
+          setLoading(false);
+        })
+        .catch((err: any) => {
+          console.log(err);
+          setLoading(false);
         });
-        return rbs;
-      })
-      .then((rbs) => {
-        setRelated(rbs);
-        setLoading(false);
-      })
-      .catch((err: any) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [match.params.slug]);
+    }
+  }, [slug]);
 
   useEffect(() => {
     getBlogAndRelated();
@@ -62,7 +59,7 @@ const Post: React.FC<PostProps> = ({ match }) => {
               ) : (
                 blog && <Article blog={blog} />
               )}
-              {blog ? <AuthorBlock author={blog.author} /> : null}
+              {blog ? <AuthorBlock authorName={blog.author} /> : null}
             </View>
             <View style={styles.textWrp}>
               <Text style={styles.text}>相关推荐</Text>
@@ -75,7 +72,7 @@ const Post: React.FC<PostProps> = ({ match }) => {
           <View style={styles.related}>
             <BlogPost
               blog={item}
-              onPress={() => history.push(`/blogs/${item.slug}`)}
+              onPress={() => navigate(`/blogs/${item.slug}`)}
             />
           </View>
         )}
@@ -89,27 +86,27 @@ export default Post;
 
 const styles = StyleSheet.create({
   post: {
-    width: "100%",
-    position: "relative",
-    height: "100%",
+    width: '100%',
+    position: 'relative',
+    height: '100%',
     paddingBottom: 40,
   },
   related: {
-    flexDirection: "row",
-    backgroundColor: "#eef0f4",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    backgroundColor: '#eef0f4',
+    justifyContent: 'space-between',
+    width: '100%',
     paddingBottom: 20,
     paddingHorizontal: 20,
   },
   textWrp: {
-    backgroundColor: "#eef0f4",
+    backgroundColor: '#eef0f4',
     paddingHorizontal: 20,
     paddingVertical: 15,
   },
   text: {
     fontSize: 15,
     letterSpacing: 1,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });

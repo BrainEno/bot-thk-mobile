@@ -1,12 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from 'react';
+import type {
+  NativeSyntheticEvent,
+  NativeTouchEvent} from 'react-native';
 import {
   View,
   StyleSheet,
-  NativeSyntheticEvent,
-  NativeTouchEvent,
   TouchableWithoutFeedback,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface SubmitButtonProps {
   children: React.ReactNode;
@@ -25,7 +26,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
     SetDown(false);
   }, [SetDown]);
 
-  const gradColors = isDown ? ["#292d32", "#30343a"] : ["#30343a", "#292d32"];
+  const gradColors = isDown ? ['#292d32', '#30343a'] : ['#30343a', '#292d32'];
 
   return (
     <TouchableWithoutFeedback
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     width: 220,
     height: 40,
     padding: 0,
-    shadowColor: "#292d32",
+    shadowColor: '#292d32',
     shadowOpacity: 1,
     shadowRadius: 7,
     borderRadius: 5,
@@ -65,16 +66,16 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     shadowOffset: { width: -3, height: -3 },
-    shadowColor: "#30343a",
+    shadowColor: '#30343a',
     shadowOpacity: 1,
     shadowRadius: 7,
     borderRadius: 5,
   },
   buttonFace: {
     padding: 12,
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

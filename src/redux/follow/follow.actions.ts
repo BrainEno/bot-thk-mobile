@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Dispatch } from "redux";
-import { listFollower, listFollowing } from "../../requests/user";
-import { withMatcher } from "../auth/auth.types";
+import type { Dispatch } from 'redux';
+
+import { listFollower, listFollowing } from '../../requests/user';
+import { withMatcher } from '../auth/auth.types';
+
 import {
   FETCH_FOLLOWINFO_FAILURE,
   FETCH_FOLLOWINFO_REQUEST,
   FETCH_FOLLOWINFO_SUCCESS,
-} from "./follow.types";
+} from './follow.types';
 
 export const fetchFollowInfoRequest = withMatcher(() => ({
   type: FETCH_FOLLOWINFO_REQUEST,
@@ -37,9 +39,9 @@ export const fetchFollowInfoAsync = () => {
       const followerData = await listFollower();
       const followingData = await listFollowing();
 
-      const followingIds = followingData !== "" ? followingData.split(",") : [];
+      const followingIds = followingData !== '' ? followingData.split(',') : [];
       const followingNum = followingIds.length || 0;
-      const followerIds = followerData !== "" ? followerData.split(",") : [];
+      const followerIds = followerData !== '' ? followerData.split(',') : [];
       const followerNum = followerIds.length || 0;
 
       dispatch(

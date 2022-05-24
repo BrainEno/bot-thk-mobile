@@ -1,6 +1,7 @@
-import React from "react";
-import { Image, View, GestureResponderEvent } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React from 'react';
+import type { GestureResponderEvent } from 'react-native';
+import { Image, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface MyIconProps {
   size: number;
@@ -15,8 +16,8 @@ export const MyIcon: React.FC<MyIconProps> = ({ size, light = false }) => {
         <Image
           source={
             light
-              ? require("../../assets/iconWhite.png")
-              : require("../../assets/icon.png")
+              ? require('../../assets/iconWhite.png')
+              : require('../../assets/icon.png')
           }
           style={{ width: size, height: size }}
         />

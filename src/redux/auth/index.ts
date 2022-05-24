@@ -1,5 +1,7 @@
-import { User } from "../../graphql/types";
-import { AnyAction } from "redux";
+import type { AnyAction } from 'redux';
+
+import type { User } from '../../graphql/types';
+
 import {
   LOGIN_FAILURE,
   LOGIN_START,
@@ -7,9 +9,9 @@ import {
   LOGOUT_FAILURE,
   LOGOUT_START,
   LOGOUT_SUCCESS,
-} from "./auth.types";
+} from './auth.types';
 
-export type UserInfo = Pick<User, "username" | "userRole" | "avatar">;
+export type UserInfo = Pick<User, 'username' | 'userRole' | 'avatar'>;
 
 export interface AuthState {
   currentUser: UserInfo | null;

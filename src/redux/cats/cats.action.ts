@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Dispatch } from "redux";
-import { Category } from "../../graphql/types";
-import { getCatWithBlogs } from "../../requests/cats";
-import { withMatcher } from "../auth/auth.types";
+import type { Dispatch } from 'redux';
+
+import type { Category } from '../../graphql/types';
+import { getCatWithBlogs } from '../../requests/cats';
+import { withMatcher } from '../auth/auth.types';
+
 import {
   FETCH_ALL_REQUEST,
   FETCH_ALL_SUCCESS,
   FETCH_ALL_FAILURE,
-} from "./cats.types";
+} from './cats.types';
 
 export const fetchAllCatRequest = withMatcher(() => ({
   type: FETCH_ALL_REQUEST,
@@ -28,7 +30,7 @@ export const fetchAllCatAsync = () => {
   return async (dispatch: Dispatch) => {
     dispatch(fetchAllCatRequest());
     try {
-      const data = await getCatWithBlogs("all");
+      const data = await getCatWithBlogs('all');
       dispatch(fetchAllCatSuccess(data));
     } catch (error: any) {
       console.log(error.message);
