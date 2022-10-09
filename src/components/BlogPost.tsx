@@ -10,7 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import { Link } from 'react-router-native';
 import dayjs from 'dayjs';
 
-import type { Blog } from '../graphql/types';
+import type { Blog } from '../graphql/sdk';
 
 interface BlogPostProps {
   blog: Blog;

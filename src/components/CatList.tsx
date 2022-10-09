@@ -3,7 +3,7 @@ import { FlatList, View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-native';
 
-import type { Blog } from '../graphql/types';
+import type { Blog } from '../graphql/sdk';
 import { fetchAllCatAsync } from '../redux/cats/cats.action';
 import { selectAllCatSelector } from '../redux/cats/cats.selector';
 

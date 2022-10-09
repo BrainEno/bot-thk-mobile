@@ -6,6 +6,8 @@ import {
   View,
   TouchableWithoutFeedback,
   Platform,
+  StatusBar,
+  StatusBarStyle,
 } from 'react-native';
 import { NativeRouter, Route, Link, Routes } from 'react-router-native';
 import {
@@ -38,7 +40,9 @@ import {
   selectFollowerNum,
   selectFollowingNum,
 } from './src/redux/follow/follow.selector';
-
+import { ApolloProvider } from '@apollo/client';
+import apolloClient from './src/apollo/apolloClient';
+import { isAndroid, isIOS, windowHeight } from './constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore:next-line
 
@@ -49,24 +53,43 @@ import {
 //     port: 8097,
 //   });
 // }
-
-const AppWrapper = () => {
-  return (
-    <Provider store={store}>
-      <NativeRouter>
-        <App />
-      </NativeRouter>
-    </Provider>
-  );
-};
+const STYLES = ['default', 'dark-content', 'light-content'] as StatusBarStyle[];
+const TRANSITIONS = ['fade', 'slide', 'none'] as Array<
+  'fade' | 'slide' | 'none'
+>;
 
 const App = () => {
+  const [statusBarStyle, setStatusBarStyle] = useState(STYLES[0]);
+  const [statusBarTransition, setStatusBarTransition] = useState(
+    TRANSITIONS[0]
+  );
+
   const [menuActive, setMenuActive] = useState(false);
   const currUser = useSelector(selectCurrentUser);
   const followingNum = useSelector(selectFollowingNum);
   const followerNum = useSelector(selectFollowerNum);
 
   const dispatch = useDispatch();
+
+
+  const changeStatusBarStyle = () => {
+    const styleId = STYLES.indexOf(statusBarStyle) + 1;
+
+    if (styleId === STYLES.length) {
+      setStatusBarStyle(STYLES[0]);
+    } else {
+      setStatusBarStyle(STYLES[styleId]);
+    }
+  };
+
+  const changeStatusBarTransition = () => {
+    const transition = TRANSITIONS.indexOf(statusBarTransition) + 1;
+    if (transition === TRANSITIONS.length) {
+      setStatusBarTransition(TRANSITIONS[0]);
+    } else {
+      setStatusBarTransition(TRANSITIONS[transition]);
+    }
+  };
 
   const handleLogout = () => {
     dispatch(logoutStart());
@@ -81,7 +104,13 @@ const App = () => {
   }, [currUser, followerNum, followingNum, dispatch]);
 
   return (
-    <SafeAreaProvider style={styles.container}>
+    <SafeAreaProvider>
+      <StatusBar
+        animated={true}
+        barStyle={statusBarStyle}
+        showHideTransition={statusBarTransition}
+        hidden={true}
+      />
       <View style={styles.container}>
         <View style={styles.nav}>
           <Link to='/'>
@@ -228,14 +257,7 @@ const App = () => {
         </View>
 
         <TouchableWithoutFeedback onPress={() => setMenuActive(false)}>
-          <View
-            style={{
-              width: '100%',
-              height: '92%',
-              position: 'absolute',
-              bottom: 0,
-              alignItems: 'center',
-            }}>
+          <View style={styles.routeWrp}>
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/about' element={<About />} />
@@ -245,14 +267,13 @@ const App = () => {
               <Route path='/blogs/:slug' element={<Post />} />
               <Route
                 path='/new-post'
-                element={() =>
-                  currUser ? <NewPost mode='create' /> : <Login />
-                }
+                element={currUser ? <NewPost mode='create' /> : <Login />}
               />
               <Route
                 path='/dashboard'
-                element={() => (currUser ? <Dashboard /> : <Login />)}
+                element={currUser ? <Dashboard /> : <Login />}
               />
+              <Route path='*' element={currUser ? <Home /> : <Login />} />
             </Routes>
           </View>
         </TouchableWithoutFeedback>
@@ -265,13 +286,15 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.select({
       android: Platform.Version <= 20 ? 0 : undefined,
+      ios: 0,
     }),
     flex: 1,
     backgroundColor: '#f5f5f5',
+    position: 'relative',
   },
   nav: {
     width: '100%',
-    height: '8%',
+    height: isAndroid ? '8%' : 80,
     backgroundColor: 'black',
     position: 'absolute',
     top: 0,
@@ -281,6 +304,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 30,
     paddingRight: 30,
+    paddingTop: isIOS ? 20 : 0,
   },
   menu: {
     display: 'flex',
@@ -353,6 +377,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: 2,
   },
+  routeWrp: {
+    width: '100%',
+    height: isIOS ? windowHeight - 80 : '92%',
+    position: 'absolute',
+    bottom: 0,
+    alignItems: 'center',
+  },
 });
+
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <ApolloProvider client={apolloClient}>
+        <NativeRouter>
+          <App />
+        </NativeRouter>
+      </ApolloProvider>
+    </Provider>
+  );
+};
 
 export default AppWrapper;

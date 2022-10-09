@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { View, Text, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
-import type { Blog } from '../graphql/types';
+import type { Blog } from '../graphql/sdk';
 
 interface ArticleProps {
   blog: Blog;

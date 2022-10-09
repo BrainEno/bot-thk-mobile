@@ -9,7 +9,7 @@ import {
 
 import { Article } from '../components/Article';
 import AuthorBlock from '../components/AuthorBlock';
-import type { Blog } from '../graphql/types';
+import type { Blog } from '../graphql/sdk';
 import { getBlogBySlug, getRelatedBlogs } from '../requests/blog';
 import { PostBtnGroup } from '../components/PostBtnGroup';
 import { BlogPost } from '../components/BlogPost';

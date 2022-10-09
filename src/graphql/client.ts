@@ -1,9 +1,11 @@
 import { GraphQLClient } from 'graphql-request';
 
 //Mobile
-export const uri = process.env.GRAPHQL_URI as string;
+// export const uri = process.env.GRAPHQL_URI as string;
 //Web
 // export const uri = process.env.API_URL as string;
+//Forwarding
+export const uri=process.env.FORWARDING as string;
 
 export const graphQLClient = new GraphQLClient(uri, {
   credentials: 'include',
@@ -15,12 +17,10 @@ export type SdkFunctionWrapper = <T>(
   operationName: string
 ) => Promise<T>;
 
- 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(
   client: GraphQLClient,
-   
   _withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
